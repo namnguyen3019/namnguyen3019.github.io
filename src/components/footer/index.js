@@ -5,17 +5,6 @@ function Footer() {
   return (
     <footer className="footer" style={footerStyle}>
       <p style={copyRightStyle}>&copy; {new Date().getFullYear()} Nam Nguyen. All rights reserved.</p>
-      <div className="social-icons" style={socialIconsStyle}>
-        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style={iconLinkStyle}>
-          <i className="fa fa-twitter" style={iconStyle}></i>
-        </a>
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={iconLinkStyle}>
-          <i className="fa fa-github" style={iconStyle}></i>
-        </a>
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={iconLinkStyle}>
-          <i className="fa fa-linkedin" style={iconStyle}></i>
-        </a>
-      </div>
     </footer>
   );
 }
