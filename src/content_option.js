@@ -21,18 +21,24 @@ const dataabout = {
 };
 const worktimeline = [{
         jobtitle: "Java Full Stack Developer",
+        desc: "Developed a robust API for internal and third-party use, enabling easy book search, author lookup, and order placement. Consumed and normalized publisher data from multiple providers, optimizing book metadata for efficient search functionality. Generated reports to aid managers in gaining insights into sales performance and overall business situations.",
         where: "Houston, Texas",
-        date: "2023",
+        dateStart: "Jan-2023",
+        dateEnd: "Now",
     },
     {
         jobtitle: "Software Developer",
-        where: "Houston, Texas",
-        date: "2022",
+        desc: "Design and develop a user-friendly and visually appealing website for the solar company, ensuring it provides relevant information about the company's products and services. Create and maintain an internal Customer Relationship Management (CRM) system to help the company manage customer interactions, track leads, and streamline sales processes.",
+        where: "Ho Chi Minh, Vietnam",
+        dateStart: "Sep 2018",
+        dateEnd: "Sep 2020",
     },
     {
         jobtitle: "React Developer",
+        desc: "Implemented Responsive Web Applications using JS, TypeScript, Reactjs, Redux, CSS, HTML, and Bootstrap, employing React Router, React Navigation, and React-i18next for seamless navigation, internationalization, achieving 35% increase in user engagement metrics",
         where: "Ho Chi Minh, Vietnam",
-        date: "2019",
+        dateStart: "Sep 2017",
+        dateEnd: "May 2018",
     },
 ];
 
@@ -80,73 +86,28 @@ const services = [{
     },
 ];
 
-const dataportfolio = [{
-        img: "https://picsum.photos/400/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
+const dataPortfolio = [
+    {
+        img: "https://images.unsplash.com/photo-1485322551133-3a4c27a9d925?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        description: "Book store system and management",
         link: "#",
     },
     {
-        img: "https://picsum.photos/400/800/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
+        img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        description: "Website and CRM system",
         link: "#",
     },
     {
-        img: "https://picsum.photos/400/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
+        img: "https://images.unsplash.com/photo-1611926653458-09294b3142bf?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        description: "Responsive Web Applications",
         link: "#",
-    },
-    {
-        img: "https://picsum.photos/400/600/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
-        link: "#",
-    },
-    {
-        img: "https://picsum.photos/400/300/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
-        link: "#",
-    },
-    {
-        img: "https://picsum.photos/400/700/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
-        link: "#",
-    },
-
-    {
-        img: "https://picsum.photos/400/600/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
-        link: "#",
-    },
-    {
-        img: "https://picsum.photos/400/300/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
-        link: "#",
-    },
-    {
-        img: "https://picsum.photos/400/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
-        link: "#",
-    },
-    {
-        img: "https://picsum.photos/400/550/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
-        link: "#",
-    },
-    {
-        img: "https://picsum.photos/400/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
-        link: "#",
-    },
-    {
-        img: "https://picsum.photos/400/700/?grayscale",
-        description: "The wisdom of life consists in the elimination of non-essentials.",
-        link: "#",
-    },
+    }
 ];
 
 const contactConfig = {
-    YOUR_EMAIL: "name@domain.com",
-    YOUR_FONE: "(555)123-4567",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula eu nunc et sollicitudin. Cras pulvinar, nisi at imperdiet pharetra. ",
+    YOUR_EMAIL: "nguyen.van4804278@gmail.com",
+    YOUR_FONE: "(555)555-5555",
+    description: "Please contact me via my email",
     // creat an emailjs.com account 
     // check out this tutorial https://www.emailjs.com/docs/examples/reactjs/
     YOUR_SERVICE_ID: "service_id",
@@ -161,6 +122,6 @@ const socialprofils = {
     twitter: "https://twitter.com",
 };
 export {
-    contactConfig, dataabout,
-    dataportfolio, introdata, logotext, meta, services, skills, socialprofils, worktimeline
+    contactConfig, dataPortfolio, dataabout, introdata, logotext, meta, services, skills, socialprofils, worktimeline
 };
+

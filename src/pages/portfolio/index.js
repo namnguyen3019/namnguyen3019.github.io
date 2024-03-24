@@ -1,8 +1,8 @@
 import React from "react";
-import "./style.css";
+import { Col, Container, Row } from "react-bootstrap";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import { Container, Row, Col } from "react-bootstrap";
-import { dataportfolio, meta } from "../../content_option";
+import { dataPortfolio, meta } from "../../content_option";
+import "./style.css";
 
 export const Portfolio = () => {
   return (
@@ -20,7 +20,7 @@ export const Portfolio = () => {
           </Col>
         </Row>
         <div className="mb-5 po_items_ho">
-          {dataportfolio.map((data, i) => {
+          {dataPortfolio.map((data, i) => {
             return (
               <div key={i} className="po_item">
                 <img src={data.img} alt="" />

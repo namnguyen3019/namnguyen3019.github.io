@@ -4,10 +4,12 @@ import {
   BrowserRouter as Router,
   useLocation,
 } from "react-router-dom";
+import Footer from '../components/footer/index';
 import Headermain from "../header";
 import AnimatedCursor from "../hooks/AnimatedCursor";
 import withRouter from "../hooks/withRouter";
 import { About } from '../pages/about';
+import { Portfolio } from "../pages/portfolio";
 import "./App.css";
 import AppRoutes from "./routes";
 
@@ -38,6 +40,8 @@ export default function App() {
        
         <AppRoutes />
         <About />
+        <Portfolio />
+        <Footer />
       </ScrollToTop>
     </Router>
   );
