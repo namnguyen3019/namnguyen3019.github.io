@@ -1,14 +1,14 @@
 import React from "react";
-import "./style.css";
+import { Col, Container, Row } from "react-bootstrap";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import { Container, Row, Col } from "react-bootstrap";
 import {
   dataabout,
   meta,
-  worktimeline,
-  skills,
   services,
+  skills,
+  worktimeline,
 } from "../../content_option";
+import "./style.css";
 
 export const About = () => {
   return (
@@ -43,13 +43,12 @@ export const About = () => {
             <table className="table caption-top">
               <tbody>
                 {worktimeline.map((data, i) => {
-                  return (
-                    <tr key={i}>
-                      <th scope="row">{data.jobtitle}</th>
-                      <td>{data.where}</td>
-                      <td>{data.date}</td>
-                    </tr>
-                  );
+                  return <><tr key={i}>
+                    <th scope="row">{data.jobtitle}</th>
+                    <td>{data.where}</td>
+                    <td>{data.date}</td>
+                  </tr>
+                  </>
                 })}
               </tbody>
             </table>
@@ -81,7 +80,7 @@ export const About = () => {
         </Row>
         <Row className="sec_sp">
           <Col lang="5">
-            <h3 className="color_sec py-4">services</h3>
+            <h3 className="color_sec py-4">Services</h3>
           </Col>
           <Col lg="7">
             {services.map((data, i) => {
