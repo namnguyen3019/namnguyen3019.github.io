@@ -23,8 +23,8 @@ const worktimeline = [{
         jobtitle: "Java Full Stack Developer",
         desc: "Developed a robust API for internal and third-party use, enabling easy book search, author lookup, and order placement. Consumed and normalized publisher data from multiple providers, optimizing book metadata for efficient search functionality. Generated reports to aid managers in gaining insights into sales performance and overall business situations.",
         where: "Houston, Texas",
-        dateStart: "Jan-2023",
-        dateEnd: "Now",
+        dateStart: "Oct 2021",
+        dateEnd: "Present",
     },
     {
         jobtitle: "Software Developer",
