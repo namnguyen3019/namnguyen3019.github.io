@@ -1,127 +1,243 @@
+// ---------------------------------------------------------------------------
+// Portfolio of Artifacts — single source of content.
+// Each "artifact" is a piece of proof-of-work documented end to end:
+// Objective (why) · Process (how) · Tools (what) · Value (why it matters)
+// plus a "Transferable" note so the portfolio doubles as a resource for others.
+// Edit the data below to update the site; components read from these exports.
+// ---------------------------------------------------------------------------
+
 const logotext = "Nam Nguyen";
+const brandTag = "Portfolio of Artifacts";
+
 const meta = {
-    title: "Nam Nguyen",
-    description: "I’m Nam Nguyen - full stack developer",
+  title: "Nam Nguyen — Portfolio of Artifacts",
+  description:
+    "Full Stack Software Engineer building AI-enabled enterprise systems, SaaS platforms, and scalable digital infrastructure. Projects documented as artifacts — objective, process, tools, and value.",
 };
 
-const introdata = {
-    title: "I’m Nam Nguyen",
-    animated: {
-        first: "I love coding",
-        second: "I code cool websites",
-        third: "I develop mobile apps",
-    },
-    description: "",
-    your_img_url: "https://img.freepik.com/free-photo/top-view-unrecognizable-hacker-performing-cyberattack-night_1098-18706.jpg?w=740&t=st=1711230792~exp=1711231392~hmac=713933a55ab0d66e773a25b60af76607b5949c4d2f3eb20d68ad37df341072d6",
+const hero = {
+  name: "Nam Nguyen",
+  roleLead: "Full Stack Software Engineer building ",
+  roleEmph: "AI-enabled enterprise systems",
+  roleTail: ", SaaS platforms, and scalable digital infrastructure.",
+  thesis:
+    "Every project below is documented as an artifact — its objective, the process behind it, the tools used, and the value it created. The point isn't just what shipped, but how it was built and what you can take from it. Consider this a record of work, and a resource for anyone solving similar problems.",
+  location: "Texas, United States",
+  availability: "Available for enterprise & SaaS work",
+  stats: [
+    { n: "8+", l: "Years full-stack" },
+    { n: "3", l: "Industries · Retail · Energy · SaaS" },
+    { n: "6", l: "Documented artifacts" },
+    { n: "MS", l: "Management Info Systems" },
+  ],
 };
 
-const dataabout = {
-    title: "About myself",
-    aboutme: "I am Nam Nguyen, a highly skilled Java Full Stack Software Engineer with over three years of experience in designing, developing, and optimizing comprehensive software solutions. My expertise spans across a broad spectrum of technologies including Java, Python, React.js, and full-stack development, complemented by a robust understanding of Spring Boot, Hibernate, and FastAPI frameworks. I have a proven track record of delivering robust APIs and enhancing data processes for improved operational efficiency, as demonstrated in my role at different companies",
-};
-const worktimeline = [{
-        jobtitle: "Java Full Stack Developer",
-        desc: "Developed a robust API for internal and third-party use, enabling easy book search, author lookup, and order placement. Consumed and normalized publisher data from multiple providers, optimizing book metadata for efficient search functionality. Generated reports to aid managers in gaining insights into sales performance and overall business situations.",
-        where: "Houston, Texas",
-        dateStart: "Oct 2021",
-        dateEnd: "Present",
-    },
-    {
-        jobtitle: "Software Developer",
-        desc: "Design and develop a user-friendly and visually appealing website for the solar company, ensuring it provides relevant information about the company's products and services. Create and maintain an internal Customer Relationship Management (CRM) system to help the company manage customer interactions, track leads, and streamline sales processes.",
-        where: "Ho Chi Minh, Vietnam",
-        dateStart: "Sep 2018",
-        dateEnd: "Sep 2020",
-    },
-    {
-        jobtitle: "React Developer",
-        desc: "Implemented Responsive Web Applications using JS, TypeScript, Reactjs, Redux, CSS, HTML, and Bootstrap, employing React Router, React Navigation, and React-i18next for seamless navigation, internationalization, achieving 35% increase in user engagement metrics",
-        where: "Ho Chi Minh, Vietnam",
-        dateStart: "Sep 2017",
-        dateEnd: "May 2018",
-    },
+const artifacts = [
+  {
+    id: "ar-01",
+    title: "7-Eleven Self-Checkout Platform",
+    tag: "Retail · Enterprise Mobile",
+    year: "2023 — Present · TechField LLC (Client: 7-Eleven)",
+    indexMeta: "Retail · 2023—Now",
+    lead:
+      "Keeping self-checkout and digital commerce reliable across thousands of convenience-retail locations, where every minute of downtime is lost transactions.",
+    objective:
+      "Modernize the self-checkout and digital-commerce systems that shoppers and store staff depend on daily — raising performance, reliability, and maintainability of the mobile software running at national retail scale.",
+    process: [
+      "Partnered with engineering teams and stakeholders to map the self-checkout flows and their real-world failure points across the retail footprint.",
+      "Built and refactored React Native / TypeScript modules for speed, resilience, and long-term maintainability at scale.",
+      "Instrumented and resolved production issues, hardening error handling for high-traffic stores.",
+      "Introduced AI-assisted steps into the delivery pipeline to lift velocity and code quality.",
+    ],
+    tools: ["React Native", "TypeScript", "Redux", "REST APIs", "CI/CD", "AWS"],
+    value:
+      "Demonstrates ownership of mission-critical, high-scale retail software — engineering for reliability under real operational pressure, not just shipping features.",
+    transferable:
+      "A repeatable pattern for stabilizing a large mobile fleet: observe the flow, isolate failure modes, refactor for resilience, then automate the pipeline around it.",
+  },
+  {
+    id: "ar-02",
+    title: "DinkPass — Sports Facility SaaS",
+    tag: "SaaS · Product Ownership",
+    year: "2026 — Present · Co-Founder & Technical Advisor",
+    indexMeta: "SaaS · 2026—Now",
+    lead:
+      "A cloud-native SaaS that digitizes sports-facility management and player engagement for community-driven racquet sports.",
+    objective:
+      "Launch a SaaS platform that handles scheduling, reservations, player engagement, and analytics for sports facilities — built to scale with a growing community from day one.",
+    process: [
+      "Defined product strategy and technical architecture from zero.",
+      "Designed cloud-based services for scheduling, reservations, engagement, and operational analytics.",
+      "Built a mobile-first experience in React Native on a FastAPI + PostgreSQL backend, deployed on AWS.",
+      "Set the scalability and infrastructure roadmap for long-term growth.",
+    ],
+    tools: ["React Native", "FastAPI", "PostgreSQL", "AWS", "Cloud Infrastructure"],
+    value:
+      "End-to-end product ownership — from architecture and infrastructure decisions to a shipped SaaS — with the founder judgment to balance speed against scalability.",
+    transferable:
+      "How to take a vertical SaaS from concept to a cloud-native architecture without over-building it before it has users.",
+  },
+  {
+    id: "ar-03",
+    title: "Enterprise API & BI Reporting Platform",
+    tag: "Enterprise · Backend & Data",
+    year: "2023 — 2024 · Mercury Systems, Inc.",
+    indexMeta: "Enterprise · 2023—24",
+    lead:
+      "Trustworthy, real-time data behind the operational decisions of an enterprise — secure APIs plus the reporting layer teams actually use.",
+    objective:
+      "Give operations and business teams reliable, real-time information by building enterprise-grade APIs and reporting systems underneath their decision-making workflows.",
+    process: [
+      "Designed and built secure REST APIs and backend services in Java / Spring Boot.",
+      "Implemented authentication and authorization with Spring Security and JWT.",
+      "Built React / TypeScript single-page apps as the operational front end.",
+      "Optimized database interactions and cloud deployment for performance at scale.",
+    ],
+    tools: ["Java", "Spring Boot", "Spring Security", "React", "TypeScript", "PostgreSQL", "AWS"],
+    value:
+      "Depth in the enterprise Java stack and secure system design — the backbone skills for regulated, data-critical business systems.",
+    transferable:
+      "A blueprint for a secure, reportable enterprise service: a typed API, JWT-based auth, and a reporting layer decision-makers genuinely rely on.",
+  },
+  {
+    id: "ar-04",
+    title: "AI-Assisted SDLC Workflow",
+    tag: "Method · Engineering Practice",
+    year: "2023 — Present · Cross-cutting",
+    indexMeta: "Method · 2023—Now",
+    lead:
+      "Not just using AI dev tools — designing the workflow that makes a team faster and safer with them.",
+    objective:
+      "Modernize how software gets built by folding AI tools into the development lifecycle — improving delivery speed, code quality, and consistency across teams without eroding rigor.",
+    process: [
+      "Evaluated AI developer tools — GitHub Copilot, Cursor, Claude — against real delivery bottlenecks.",
+      "Designed prompt patterns and review checkpoints so AI accelerates work without lowering the quality bar.",
+      "Integrated AI steps into code review, generation, and testing inside existing CI/CD.",
+      "Measured developer-productivity impact and iterated on the workflow.",
+    ],
+    tools: ["GitHub Copilot", "Cursor AI", "Claude", "OpenAI API", "Prompt Engineering", "CI/CD"],
+    value:
+      "Positions me at the front of AI-enabled engineering — designing the practice, not just consuming the tools.",
+    transferable:
+      "A practical framework any team can adopt to introduce AI into the SDLC while keeping code review and quality gates intact.",
+  },
+  {
+    id: "ar-05",
+    title: "Renewable-Energy CRM",
+    tag: "Clean Energy · Full-Stack",
+    year: "2018 — 2020 · FidSolar · Ho Chi Minh City",
+    indexMeta: "Clean Energy · 2018—20",
+    lead:
+      "A CRM shaped around the real operational workflows of a solar-energy business, not a generic template.",
+    objective:
+      "Support solar-energy operations with a CRM that streamlines customer engagement and the internal workflows the team runs every day.",
+    process: [
+      "Built CRM modules for customer management and operational workflows.",
+      "Developed responsive React / TypeScript front ends.",
+      "Engineered Java / Spring backend services with a scalable Oracle schema and enterprise authentication.",
+      "Optimized request processing and operational scalability.",
+    ],
+    tools: ["React", "TypeScript", "Java", "Spring Boot", "Oracle", "Hibernate"],
+    value:
+      "Domain fluency in renewable energy plus the full-stack range to deliver a working operational system, front to back.",
+    transferable:
+      "How to shape a CRM around one industry's actual workflows instead of bending a generic tool to fit.",
+  },
+  {
+    id: "ar-06",
+    title: "Solar Operations Web Platform",
+    tag: "Clean Energy · Foundations",
+    year: "2017 — 2018 · Viet Phan LLC",
+    indexMeta: "Clean Energy · 2017—18",
+    lead:
+      "The early full-stack breadth — multiple frameworks, backend, and DevOps — that became the foundation for later enterprise and SaaS work.",
+    objective:
+      "Build and maintain full-stack web applications supporting solar-energy operations and the digital business infrastructure around them.",
+    process: [
+      "Designed full-stack applications for solar operational workflows.",
+      "Built front ends in React and Vue.js.",
+      "Engineered Java and relational-database backend services and APIs.",
+      "Implemented CI/CD and deployment automation.",
+    ],
+    tools: ["React", "Vue.js", "Java", "MySQL", "PostgreSQL", "AWS"],
+    value:
+      "Proof of early breadth across frameworks, backend, and DevOps — the versatile base that everything since has been built on.",
+    transferable:
+      "The compounding value of learning CI/CD and multi-framework fundamentals early, before specializing.",
+  },
 ];
 
-const skills = [{
-        name: "Java | Spring & Spring Boot",
-        value: 90,
+const profile = {
+  summary: [
+    "Technology professional with extensive experience designing and developing scalable enterprise software systems, AI-assisted development workflows, cloud infrastructure, and SaaS platforms that support operational efficiency and digital modernization.",
+    "My work spans renewable energy, retail commerce, and SaaS technology services — from large-scale operational systems to optimizing software delivery pipelines and contributing to AI-enabled engineering modernization. Currently focused on scalable digital infrastructure, AI-assisted SDLC practices, and cloud-based SaaS innovation.",
+  ],
+  focus: [
+    "AI-Assisted SDLC",
+    "Enterprise Architecture",
+    "Full-Stack Development",
+    "Scalable Cloud Infrastructure",
+    "SaaS Platform Engineering",
+    "Mobile Systems",
+    "REST APIs & Microservices",
+    "CI/CD & DevOps",
+  ],
+  experience: [
+    { role: "Senior Software Engineer", when: "Jul 2023 — Now", org: "TechField LLC · Client: 7-Eleven · Texas" },
+    { role: "Co-Founder & Technical Advisor", when: "2026 — Now", org: "DinkPass — Sports Facility SaaS" },
+    { role: "Full Stack Engineer", when: "Jan 2023 — Dec 2024", org: "Mercury Systems, Inc. · United States" },
+    { role: "Software Developer", when: "Sep 2018 — Sep 2020", org: "FidSolar · Ho Chi Minh City" },
+    { role: "Full Stack Software Developer", when: "Sep 2017 — Aug 2018", org: "Viet Phan LLC · Vietnam" },
+    { role: "Technical Engineer", when: "Sep 2017 — May 2018", org: "Keyence · Ho Chi Minh City" },
+  ],
+  skills: [
+    {
+      label: "AI & Systems",
+      items:
+        "OpenAI API · GPT-4 Integration · AI-Assisted SDLC · Prompt Engineering · GitHub Copilot · Cursor AI · Claude · Speech-to-Text & Text-to-Speech · Real-Time AI Communication",
     },
     {
-        name: "Javascript | React JS",
-        value: 90,
+      label: "Frontend",
+      items: "React.js · React Native · TypeScript · JavaScript · Redux · HTML5 · CSS3 · Bootstrap · Material UI",
     },
     {
-        name: "React-Native | Android | iOS",
-        value: 90,
+      label: "Backend",
+      items: "Java · Spring Boot · Spring MVC · Spring Security · Hibernate · JPA · RESTful APIs · Node.js · Python · FastAPI",
     },
     {
-        name: "Database",
-        value: 85,
+      label: "Cloud & Infra",
+      items: "AWS (EC2 · S3 · RDS · CloudFront) · Firebase · CI/CD Pipelines · Cloud-Native Deployment",
+    },
+    { label: "Databases", items: "PostgreSQL · MySQL · Oracle · MongoDB" },
+    {
+      label: "DevOps",
+      items: "Git · GitHub · JIRA · Postman · Maven · Agile / Scrum · CI/CD Automation · Performance Optimization",
+    },
+  ],
+  education: [
+    {
+      deg: "M.S., Management Information Systems",
+      school: "University of Houston–Clear Lake · Houston, Texas",
+      when: "Graduated Dec 2022",
     },
     {
-        name: "Microservices",
-        value: 80,
+      deg: "B.Eng., Petroleum Engineering",
+      school: "PetroVietnam University · Vietnam",
+      when: "Graduated Aug 2017",
     },
-    {
-        name: "AWS- Cloud Services",
-        value: 70,
-    },
-    {
-        name: "CI/CD - DevOps",
-        value: 70,
-    },
-];
-
-const services = [{
-        title: "Software Development",
-        description: "My proficiency in front-end technologies, coupled with my ability to implement complex back-end logic, allows me to create seamless, user-centric applications. My experience with Agile methodologies and a strong commitment to Test Driven Development (TDD) ensure that I can adapt rapidly to changing requirements while maintaining high-quality standards.",
-    },
-    {
-        title: "Mobile Apps",
-        description: "My proficiency in React, coupled with my understanding of mobile development nuances, allows me to leverage React Native's capabilities to create applications that are not only efficient but also aesthetically pleasing and intuitive for the end-user. My approach to mobile app development involves a keen focus on performance optimization, reusable component design, and seamless integration with backend services, ensuring a coherent and robust application ecosystem",
-    },
-    {
-        title: "Cloud Services",
-        description: "As a Java Full Stack Software Engineer, I bring a comprehensive skill set in both development and testing, ensuring that every piece of code not only meets functional requirements but also adheres to the highest standards of quality and reliability. My proficiency in Test Driven Development (TDD) lies at the core of my approach, enabling me to write robust, maintainable, and bug-free code from the outset.",
-    },
-];
-
-const dataPortfolio = [
-    {
-        img: "https://images.unsplash.com/photo-1485322551133-3a4c27a9d925?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        description: "Book store system and management",
-        link: "#",
-    },
-    {
-        img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        description: "Website and CRM system",
-        link: "#",
-    },
-    {
-        img: "https://images.unsplash.com/photo-1611926653458-09294b3142bf?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        description: "Responsive Web Applications",
-        link: "#",
-    }
-];
-
-const contactConfig = {
-    YOUR_EMAIL: "nguyen.van4804278@gmail.com",
-    YOUR_FONE: "(555)555-5555",
-    description: "Please contact me via my email",
-    // creat an emailjs.com account 
-    // check out this tutorial https://www.emailjs.com/docs/examples/reactjs/
-    YOUR_SERVICE_ID: "service_id",
-    YOUR_TEMPLATE_ID: "template_id",
-    YOUR_USER_ID: "user_id",
+  ],
 };
 
-const socialprofils = {
-    github: "https://github.com/namnguyen3019",
-    facebook: "https://facebook.com",
-    linkedin: "https://linkedin.com/in/namnguyenhue",
-    twitter: "https://twitter.com",
-};
-export {
-    contactConfig, dataPortfolio, dataabout, introdata, logotext, meta, services, skills, socialprofils, worktimeline
+const contact = {
+  headline: "Let's build something worth documenting",
+  blurb:
+    "Open to enterprise engineering, SaaS product work, and AI-enabled modernization. The fastest way to reach me is email.",
+  links: [
+    { k: "Email", href: "mailto:nam.nguy3019@gmail.com", label: "nam.nguy3019@gmail.com" },
+    { k: "GitHub", href: "https://github.com/namnguyen3019", label: "github.com/namnguyen3019" },
+    { k: "LinkedIn", href: "https://linkedin.com/in/namnguyenhue", label: "in/namnguyenhue" },
+    { k: "Web", href: "https://namnguyen.bio", label: "namnguyen.bio" },
+  ],
 };
 
+export { logotext, brandTag, meta, hero, artifacts, profile, contact };
