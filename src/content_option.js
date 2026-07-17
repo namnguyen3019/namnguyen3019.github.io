@@ -27,7 +27,7 @@ const hero = {
   stats: [
     { n: "8+", l: "Years full-stack" },
     { n: "3", l: "Industries · Retail · Energy · SaaS" },
-    { n: "6", l: "Documented artifacts" },
+    { n: "1", l: "Documented artifact" },
     { n: "MS", l: "Management Info Systems" },
   ],
 };
@@ -35,135 +35,44 @@ const hero = {
 const artifacts = [
   {
     id: "ar-01",
-    title: "7-Eleven Self-Checkout Platform",
-    tag: "Retail · Enterprise Mobile",
-    year: "2023 — Present · TechField LLC (Client: 7-Eleven)",
-    indexMeta: "Retail · 2023—Now",
+    title: "Exploring AI & ML Tools in Practice",
+    tag: "Applied AI · Hands-On Lab",
+    year: "2026 · AI-LAB-500 · Hands-On Lab Report",
+    indexMeta: "Applied AI · 2026",
     lead:
-      "Keeping self-checkout and digital commerce reliable across thousands of convenience-retail locations, where every minute of downtime is lost transactions.",
+      "A hands-on survey of today's AI/ML tools — Claude Code, custom GPTs, and research assistants — that ends in a purpose-built study agent I designed, prompted, and shipped.",
     objective:
-      "Modernize the self-checkout and digital-commerce systems that shoppers and store staff depend on daily — raising performance, reliability, and maintainability of the mobile software running at national retail scale.",
+      "Move from using AI tools to evaluating them like an engineer: run the same task across multiple models, judge the outputs against explicit criteria, then build a custom AI agent aimed at a real user need.",
     process: [
-      "Partnered with engineering teams and stakeholders to map the self-checkout flows and their real-world failure points across the retail footprint.",
-      "Built and refactored React Native / TypeScript modules for speed, resilience, and long-term maintainability at scale.",
-      "Instrumented and resolved production issues, hardening error handling for high-traffic stores.",
-      "Introduced AI-assisted steps into the delivery pipeline to lift velocity and code quality.",
+      "Ran one structured prompt — a two-month AI/ML learning plan bound to a fixed set of course outcomes and topics — across three models: Claude Code on Haiku 4.5, Opus 4.8, and Sonnet 5.",
+      "Scored the outputs on four criteria — correctness, relevance, completeness, and efficiency — and documented where the models diverged (mostly depth and formatting, not coverage).",
+      "Tested two research tools against real tasks: Scholar GPT for cited academic answers, and Storm AI for first-draft brainstorming — noting Storm's strong structure but weak readability.",
+      "Designed and built Study Boost, a custom GPT that plans coursework and supports studying — writing its behavior prompt, adding domain knowledge, selecting a model, and wiring external actions.",
     ],
-    tools: ["React Native", "TypeScript", "Redux", "REST APIs", "CI/CD", "AWS"],
-    value:
-      "Demonstrates ownership of mission-critical, high-scale retail software — engineering for reliability under real operational pressure, not just shipping features.",
-    transferable:
-      "A repeatable pattern for stabilizing a large mobile fleet: observe the flow, isolate failure modes, refactor for resilience, then automate the pipeline around it.",
-  },
-  {
-    id: "ar-02",
-    title: "DinkPass — Sports Facility SaaS",
-    tag: "SaaS · Product Ownership",
-    year: "2026 — Present · Co-Founder & Technical Advisor",
-    indexMeta: "SaaS · 2026—Now",
-    lead:
-      "A cloud-native SaaS that digitizes sports-facility management and player engagement for community-driven racquet sports.",
-    objective:
-      "Launch a SaaS platform that handles scheduling, reservations, player engagement, and analytics for sports facilities — built to scale with a growing community from day one.",
-    process: [
-      "Defined product strategy and technical architecture from zero.",
-      "Designed cloud-based services for scheduling, reservations, engagement, and operational analytics.",
-      "Built a mobile-first experience in React Native on a FastAPI + PostgreSQL backend, deployed on AWS.",
-      "Set the scalability and infrastructure roadmap for long-term growth.",
+    tools: [
+      "Claude Code",
+      "Haiku 4.5",
+      "Opus 4.8",
+      "Sonnet 5",
+      "Custom GPTs",
+      "Scholar GPT",
+      "Storm AI",
+      "Prompt Engineering",
     ],
-    tools: ["React Native", "FastAPI", "PostgreSQL", "AWS", "Cloud Infrastructure"],
     value:
-      "End-to-end product ownership — from architecture and infrastructure decisions to a shipped SaaS — with the founder judgment to balance speed against scalability.",
+      "Shows I can assess AI tools with a repeatable rubric instead of gut feel, then turn that judgment into a working agent built around a specific user — a busy student who needs a clear, usable study plan.",
     transferable:
-      "How to take a vertical SaaS from concept to a cloud-native architecture without over-building it before it has users.",
-  },
-  {
-    id: "ar-03",
-    title: "Enterprise API & BI Reporting Platform",
-    tag: "Enterprise · Backend & Data",
-    year: "2023 — 2024 · Mercury Systems, Inc.",
-    indexMeta: "Enterprise · 2023—24",
-    lead:
-      "Trustworthy, real-time data behind the operational decisions of an enterprise — secure APIs plus the reporting layer teams actually use.",
-    objective:
-      "Give operations and business teams reliable, real-time information by building enterprise-grade APIs and reporting systems underneath their decision-making workflows.",
-    process: [
-      "Designed and built secure REST APIs and backend services in Java / Spring Boot.",
-      "Implemented authentication and authorization with Spring Security and JWT.",
-      "Built React / TypeScript single-page apps as the operational front end.",
-      "Optimized database interactions and cloud deployment for performance at scale.",
+      "A simple way to pick an AI model for a task: fix the prompt, run it across candidates, and grade the results on correctness, relevance, completeness, and efficiency before you commit.",
+    links: [
+      {
+        label: "Try Study Boost",
+        href: "https://chatgpt.com/g/g-6a53b0cf651081919342d373018af186-studyboost",
+      },
+      {
+        label: "Scholar GPT session",
+        href: "https://chatgpt.com/share/6a53aaa6-f394-83ea-8c01-1f5fd44c6ace",
+      },
     ],
-    tools: ["Java", "Spring Boot", "Spring Security", "React", "TypeScript", "PostgreSQL", "AWS"],
-    value:
-      "Depth in the enterprise Java stack and secure system design — the backbone skills for regulated, data-critical business systems.",
-    transferable:
-      "A blueprint for a secure, reportable enterprise service: a typed API, JWT-based auth, and a reporting layer decision-makers genuinely rely on.",
-  },
-  {
-    id: "ar-04",
-    title: "AI-Assisted SDLC Workflow",
-    tag: "Method · Engineering Practice",
-    year: "2023 — Present · Cross-cutting",
-    indexMeta: "Method · 2023—Now",
-    lead:
-      "Not just using AI dev tools — designing the workflow that makes a team faster and safer with them.",
-    objective:
-      "Modernize how software gets built by folding AI tools into the development lifecycle — improving delivery speed, code quality, and consistency across teams without eroding rigor.",
-    process: [
-      "Evaluated AI developer tools — GitHub Copilot, Cursor, Claude — against real delivery bottlenecks.",
-      "Designed prompt patterns and review checkpoints so AI accelerates work without lowering the quality bar.",
-      "Integrated AI steps into code review, generation, and testing inside existing CI/CD.",
-      "Measured developer-productivity impact and iterated on the workflow.",
-    ],
-    tools: ["GitHub Copilot", "Cursor AI", "Claude", "OpenAI API", "Prompt Engineering", "CI/CD"],
-    value:
-      "Positions me at the front of AI-enabled engineering — designing the practice, not just consuming the tools.",
-    transferable:
-      "A practical framework any team can adopt to introduce AI into the SDLC while keeping code review and quality gates intact.",
-  },
-  {
-    id: "ar-05",
-    title: "Renewable-Energy CRM",
-    tag: "Clean Energy · Full-Stack",
-    year: "2018 — 2020 · FidSolar · Ho Chi Minh City",
-    indexMeta: "Clean Energy · 2018—20",
-    lead:
-      "A CRM shaped around the real operational workflows of a solar-energy business, not a generic template.",
-    objective:
-      "Support solar-energy operations with a CRM that streamlines customer engagement and the internal workflows the team runs every day.",
-    process: [
-      "Built CRM modules for customer management and operational workflows.",
-      "Developed responsive React / TypeScript front ends.",
-      "Engineered Java / Spring backend services with a scalable Oracle schema and enterprise authentication.",
-      "Optimized request processing and operational scalability.",
-    ],
-    tools: ["React", "TypeScript", "Java", "Spring Boot", "Oracle", "Hibernate"],
-    value:
-      "Domain fluency in renewable energy plus the full-stack range to deliver a working operational system, front to back.",
-    transferable:
-      "How to shape a CRM around one industry's actual workflows instead of bending a generic tool to fit.",
-  },
-  {
-    id: "ar-06",
-    title: "Solar Operations Web Platform",
-    tag: "Clean Energy · Foundations",
-    year: "2017 — 2018 · Viet Phan LLC",
-    indexMeta: "Clean Energy · 2017—18",
-    lead:
-      "The early full-stack breadth — multiple frameworks, backend, and DevOps — that became the foundation for later enterprise and SaaS work.",
-    objective:
-      "Build and maintain full-stack web applications supporting solar-energy operations and the digital business infrastructure around them.",
-    process: [
-      "Designed full-stack applications for solar operational workflows.",
-      "Built front ends in React and Vue.js.",
-      "Engineered Java and relational-database backend services and APIs.",
-      "Implemented CI/CD and deployment automation.",
-    ],
-    tools: ["React", "Vue.js", "Java", "MySQL", "PostgreSQL", "AWS"],
-    value:
-      "Proof of early breadth across frameworks, backend, and DevOps — the versatile base that everything since has been built on.",
-    transferable:
-      "The compounding value of learning CI/CD and multi-framework fundamentals early, before specializing.",
   },
 ];
 

@@ -217,6 +217,11 @@ section.band { padding-block: clamp(3.2rem, 8vw, 5.5rem); }
 .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; margin: 0; padding: 0; }
 .chips li { font-family: var(--font-mono); font-size: 0.74rem; padding: 0.28rem 0.55rem; border: 1px solid var(--line); border-radius: 3px; color: var(--muted); background: var(--surface-2); white-space: nowrap; }
 
+.spec__row--links dt { color: var(--accent-deep); }
+.links { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 0; padding: 0; }
+.links a { font-family: var(--font-mono); font-size: 0.74rem; padding: 0.3rem 0.6rem; border: 1px solid var(--accent); border-radius: 3px; color: var(--accent); background: transparent; text-decoration: none; white-space: nowrap; transition: background 0.15s ease, color 0.15s ease; }
+.links a:hover { background: var(--accent); color: #fff; }
+
 /* ---------- PROFILE ---------- */
 .profile { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
 @media (max-width: 820px) { .profile { grid-template-columns: 1fr; } }

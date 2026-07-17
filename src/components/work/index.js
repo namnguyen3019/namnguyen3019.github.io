@@ -44,6 +44,22 @@ const Record = ({ a }) => (
         <dt>Transferable</dt>
         <dd>{a.transferable}</dd>
       </div>
+      {a.links && a.links.length > 0 && (
+        <div className="spec__row spec__row--links">
+          <dt>Links</dt>
+          <dd>
+            <ul className="links">
+              {a.links.map((l, i) => (
+                <li key={i}>
+                  <a href={l.href} target="_blank" rel="noreferrer noopener">
+                    {l.label} ↗
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      )}
     </dl>
   </Reveal>
 );
@@ -54,9 +70,9 @@ const Work = () => {
       <div className="wrap">
         <Reveal className="section-head">
           <p className="eyebrow">Selected Work</p>
-          <h2>Six artifacts, each documented end to end</h2>
+          <h2>The work, documented end to end</h2>
           <p>
-            Skim the index, then open any record. Each follows the same structure —{" "}
+            Open the record below. Each follows the same structure —{" "}
             <strong>Objective · Process · Tools · Value</strong> — with a note on what's transferable to your own work.
           </p>
         </Reveal>
