@@ -1,0 +1,822 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Traditional ML vs. Deep Learning in Healthcare — Group 01</title>
+<meta name="description" content="A comparative slide deck on interpretable machine learning versus deep learning across two deployed clinical AI systems — Epic's Sepsis Model and Google Health's diabetic-retinopathy CNN — with a phased adoption strategy and ethical analysis.">
+<meta name="author" content="Nam Nguyen">
+<link rel="icon" href="/favicon.ico">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Traditional ML vs. Deep Learning in Healthcare — Group 01">
+<meta property="og:description" content="A comparative slide deck on interpretable machine learning versus deep learning across two deployed clinical AI systems — Epic's Sepsis Model and Google Health's diabetic-retinopathy CNN — with a phased adoption strategy and ethical analysis.">
+<meta property="og:url" content="https://namnguyen.bio/artifacts/ml-vs-dl-healthcare/">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<style>
+  /* ============================================================
+     DIAGNOSTIC CONSOLE — Traditional ML vs. Deep Learning in Healthcare
+     Group 01 · Applied AI deck. Single-theme dark presentation stage.
+     v2 — larger type, tighter copy for readability.
+     ============================================================ */
+  *,*::before,*::after{ box-sizing:border-box; }
+
+  :root{
+    --bg:#080B11; --bg-2:#0B0F17; --panel:#10161F; --panel-2:#141C28;
+    --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.15);
+    --ink:#EAF1F6; --muted:#9DABBB; --faint:#5E6D7E;
+    --ml:#34E3C0; --ml-dim:rgba(52,227,192,.14); --ml-line:rgba(52,227,192,.42);
+    --dl:#8B7BFF; --dl-dim:rgba(139,123,255,.15); --dl-line:rgba(139,123,255,.44);
+    --warn:#F5B44C; --warn-dim:rgba(245,180,76,.14); --warn-line:rgba(245,180,76,.4);
+    --synth:linear-gradient(90deg,var(--ml),var(--dl));
+    --mono:ui-monospace,"SF Mono",Menlo,"Cascadia Code",Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --pad:clamp(1.5rem,4.2vw,4.2rem);
+  }
+
+  html,body{ margin:0; height:100%; background:var(--bg); }
+  body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialiased; overflow:hidden; }
+
+  /* ---------- DECK SHELL ---------- */
+  .deck{
+    position:fixed; inset:0; overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 82% -10%, rgba(139,123,255,.10), transparent 55%),
+      radial-gradient(120% 90% at 12% 108%, rgba(52,227,192,.09), transparent 52%),
+      var(--bg);
+  }
+  .deck::before{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:64px 64px; mask-image:radial-gradient(120% 100% at 50% 40%,#000 55%,transparent 100%);
+  }
+
+  /* ---------- CHROME ---------- */
+  .chrome{ position:absolute; left:0; right:0; z-index:40; display:flex; justify-content:space-between; align-items:center;
+    padding:clamp(.9rem,2.4vw,1.5rem) var(--pad); font-family:var(--mono); font-size:.8rem; letter-spacing:.12em; pointer-events:none; }
+  .chrome.top{ top:0; }
+  .brand{ color:var(--muted); text-transform:uppercase; display:flex; align-items:center; gap:.65rem; }
+  .brand b{ color:var(--ink); font-weight:600; letter-spacing:.14em; }
+  .heartdot{ width:9px; height:9px; border-radius:50%; background:var(--ml); box-shadow:0 0 0 0 rgba(52,227,192,.6); animation:beat 2.4s ease-out infinite; }
+  @keyframes beat{ 0%{ box-shadow:0 0 0 0 rgba(52,227,192,.55);} 18%{ box-shadow:0 0 0 8px rgba(52,227,192,0);} 100%{ box-shadow:0 0 0 0 rgba(52,227,192,0);} }
+  .readout{ display:flex; align-items:center; gap:1rem; color:var(--muted); }
+  .owner-chip{ border:1px solid var(--line-2); border-radius:999px; padding:.38rem .78rem; color:var(--ink);
+    display:inline-flex; align-items:center; gap:.5rem; background:rgba(255,255,255,.02); }
+  .owner-chip .dot{ width:8px; height:8px; border-radius:50%; background:var(--muted); }
+  .counter b{ color:var(--ink); font-size:1rem; }
+  .counter span{ color:var(--faint); }
+
+  /* ---------- SLIDES ---------- */
+  .slide{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    padding:clamp(3.8rem,7.5vh,5.4rem) 0; opacity:0; visibility:hidden; transform:scale(.99);
+    transition:opacity .5s ease, transform .5s ease, visibility 0s linear .5s; }
+  .slide.active{ opacity:1; visibility:visible; transform:none; transition:opacity .55s ease, transform .55s ease; z-index:10; }
+  .stage{ width:min(1200px,93vw); max-height:84vh; overflow:auto; padding:0 var(--pad);
+    scrollbar-width:thin; scrollbar-color:var(--line-2) transparent; }
+  .stage::-webkit-scrollbar{ width:6px; } .stage::-webkit-scrollbar-thumb{ background:var(--line-2); border-radius:6px; }
+
+  .slide-head{ margin-bottom:clamp(1.3rem,3vh,2.3rem); }
+  .kicker{ font-family:var(--mono); font-size:.86rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
+    display:inline-flex; align-items:center; gap:.7rem; }
+  .kicker::before{ content:""; width:30px; height:2px; background:currentColor; opacity:.6; }
+  .slide[data-accent=ml] .kicker{ color:var(--ml); } .slide[data-accent=dl] .kicker{ color:var(--dl); }
+  .slide[data-accent=warn] .kicker{ color:var(--warn); }
+  .slide-title{ font-size:clamp(2.1rem,5.2vw,3.6rem); line-height:1.02; letter-spacing:-.02em; font-weight:800;
+    margin:.55rem 0 0; text-wrap:balance; }
+  .slide-title .g{ background:var(--synth); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .slide-sub{ color:var(--muted); font-size:clamp(1.1rem,1.9vw,1.4rem); max-width:60ch; margin:.85rem 0 0; line-height:1.45; }
+
+  /* reveal-on-active */
+  .slide-body .reveal, .slide-head .reveal{ opacity:0; transform:translateY(16px); }
+  .slide.active .reveal{ opacity:1; transform:none; transition:opacity .55s ease, transform .55s ease; }
+  .slide.active .reveal:nth-child(1){ transition-delay:.06s; } .slide.active .reveal:nth-child(2){ transition-delay:.14s; }
+  .slide.active .reveal:nth-child(3){ transition-delay:.22s; } .slide.active .reveal:nth-child(4){ transition-delay:.3s; }
+  .slide.active .reveal:nth-child(5){ transition-delay:.38s; } .slide.active .reveal:nth-child(6){ transition-delay:.46s; }
+
+  /* ---------- PRIMITIVES ---------- */
+  .grid{ display:grid; gap:clamp(1rem,1.9vw,1.5rem); }
+  .cols-2{ grid-template-columns:1fr 1fr; } .cols-3{ grid-template-columns:repeat(3,1fr); } .cols-4{ grid-template-columns:repeat(4,1fr); }
+  @media (max-width:820px){ .cols-2,.cols-3,.cols-4{ grid-template-columns:1fr; } }
+
+  .card{ background:linear-gradient(180deg,var(--panel),var(--bg-2)); border:1px solid var(--line); border-radius:12px;
+    padding:clamp(1.15rem,2vw,1.6rem); position:relative; }
+  .card.key{ border-top:2px solid var(--line-2); }
+  .card.ml{ border-top:2px solid var(--ml); } .card.dl{ border-top:2px solid var(--dl); } .card.warn{ border-top:2px solid var(--warn); }
+  .card h3{ margin:0 0 .7rem; font-size:1.28rem; letter-spacing:-.01em; display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; }
+  .card .tag{ font-family:var(--mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; padding:.26rem .55rem;
+    border-radius:5px; border:1px solid var(--line-2); color:var(--muted); }
+  .tag.ml{ color:var(--ml); border-color:var(--ml-line); background:var(--ml-dim); }
+  .tag.dl{ color:var(--dl); border-color:var(--dl-line); background:var(--dl-dim); }
+  .tag.warn{ color:var(--warn); border-color:var(--warn-line); background:var(--warn-dim); }
+
+  .lead{ color:var(--muted); font-size:1.1rem; line-height:1.5; margin:0; }
+  ul.list{ list-style:none; margin:.3rem 0 0; padding:0; display:flex; flex-direction:column; gap:.7rem; }
+  ul.list li{ position:relative; padding-left:1.3rem; color:var(--muted); font-size:1.1rem; line-height:1.45; }
+  ul.list li::before{ content:""; position:absolute; left:0; top:.55em; width:7px; height:7px; border-radius:50%; background:var(--faint); }
+  ul.list li b{ color:var(--ink); font-weight:600; }
+  .slide[data-accent=ml] ul.list li::before{ background:var(--ml); } .slide[data-accent=dl] ul.list li::before{ background:var(--dl); }
+  .slide[data-accent=warn] ul.list li::before{ background:var(--warn); }
+
+  .eyebrow{ font-family:var(--mono); font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); margin:0 0 .35rem; }
+
+  .stat{ font-family:var(--mono); font-weight:600; letter-spacing:-.01em; line-height:1; }
+  .stat .n{ font-size:clamp(1.8rem,4vw,2.7rem); color:var(--ink); } .stat .u{ font-size:.95rem; color:var(--muted); }
+
+  .cite{ font-family:var(--mono); font-size:.82rem; color:var(--faint); letter-spacing:.03em; line-height:1.5; }
+  .cite b{ color:var(--muted); font-weight:500; }
+
+  /* comparison blueprint */
+  .blueprint{ border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .bp-row{ display:grid; grid-template-columns:1fr 1.5fr 1.5fr; border-top:1px solid var(--line); }
+  .bp-row:first-child{ border-top:0; }
+  .bp-row > div{ padding:.85rem clamp(.85rem,1.5vw,1.2rem); font-size:1.04rem; line-height:1.4; }
+  .bp-row .dim{ font-family:var(--mono); font-size:.82rem; letter-spacing:.04em; text-transform:uppercase; color:var(--muted);
+    background:rgba(255,255,255,.02); display:flex; align-items:center; }
+  .bp-row .c-ml{ color:var(--ink); border-left:1px solid var(--ml-line); background:linear-gradient(90deg,var(--ml-dim),transparent 80%); }
+  .bp-row .c-dl{ color:var(--ink); border-left:1px solid var(--dl-line); background:linear-gradient(90deg,var(--dl-dim),transparent 80%); }
+  .bp-head > div{ font-family:var(--mono); font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; padding-top:1rem; padding-bottom:1rem; }
+  .bp-head .c-ml{ color:var(--ml); } .bp-head .c-dl{ color:var(--dl); }
+  .bp-head .c-ml b,.bp-head .c-dl b{ display:block; color:var(--ink); font-size:1rem; letter-spacing:0; text-transform:none; margin-top:.2rem; }
+  @media (max-width:820px){ .bp-row{ grid-template-columns:1fr; } .bp-row .c-ml,.bp-row .c-dl{ border-left:0; border-top:1px solid var(--line); } }
+
+  /* roadmap timeline */
+  .track{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(1rem,1.9vw,1.4rem); position:relative; }
+  @media (max-width:820px){ .track{ grid-template-columns:1fr; } }
+  .phase{ background:linear-gradient(180deg,var(--panel),var(--bg-2)); border:1px solid var(--line); border-radius:12px; padding:1.2rem; position:relative; }
+  .phase .ph-no{ font-family:var(--mono); font-size:.76rem; letter-spacing:.14em; color:var(--faint); }
+  .phase .ph-yr{ font-family:var(--mono); font-size:.92rem; margin-top:.15rem; }
+  .phase.p1{ border-top:2px solid var(--ml); } .phase.p1 .ph-yr{ color:var(--ml); }
+  .phase.p2{ border-top:2px solid var(--dl); } .phase.p2 .ph-yr{ color:var(--dl); }
+  .phase.p3{ border-top:2px solid transparent; background-image:linear-gradient(180deg,var(--panel),var(--bg-2)),var(--synth); background-origin:border-box; background-clip:padding-box,border-box; }
+  .phase.p3 .ph-yr{ background:var(--synth); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .phase h4{ margin:.55rem 0 .6rem; font-size:1.28rem; letter-spacing:-.01em; }
+  .connector{ position:absolute; top:-.7rem; left:12%; right:12%; height:1px; background:var(--synth); opacity:.5; }
+  @media (max-width:820px){ .connector{ display:none; } }
+
+  /* member cards (title) */
+  .members{ display:grid; grid-template-columns:repeat(4,1fr); gap:.85rem; }
+  @media (max-width:760px){ .members{ grid-template-columns:1fr 1fr; } }
+  .mcard{ border:1px solid var(--line); border-radius:11px; padding:1rem 1.05rem; background:rgba(255,255,255,.015); }
+  .mcard .role{ font-family:var(--mono); font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  .mcard .name{ font-size:1.35rem; font-weight:700; margin-top:.3rem; letter-spacing:-.01em; }
+  .mcard .num{ font-family:var(--mono); font-size:.7rem; color:var(--faint); }
+  .mcard.a-ml{ border-top:2px solid var(--ml); } .mcard.a-dl{ border-top:2px solid var(--dl); }
+  .mcard.a-ind{ border-top:2px solid var(--muted); } .mcard.a-syn{ border-top:2px solid transparent;
+    background-image:linear-gradient(rgba(255,255,255,.015),rgba(255,255,255,.015)),var(--synth); background-origin:border-box; background-clip:padding-box,border-box; }
+
+  /* references */
+  .refs{ display:flex; flex-direction:column; gap:1rem; counter-reset:r; }
+  .ref{ padding-left:2.6rem; position:relative; font-size:1.02rem; line-height:1.5; color:var(--muted); }
+  .ref::before{ counter-increment:r; content:"["counter(r)"]"; position:absolute; left:0; top:.05rem; font-family:var(--mono); font-size:.82rem; color:var(--ml); }
+  .ref b{ color:var(--ink); font-weight:600; } .ref i{ color:var(--muted); font-style:italic; }
+  .ref a{ color:var(--dl); text-decoration:none; word-break:break-all; } .ref a:hover{ text-decoration:underline; }
+
+  .checks{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.75rem; }
+  .checks li{ position:relative; padding-left:1.9rem; color:var(--muted); font-size:1.1rem; line-height:1.45; }
+  .checks li::before{ content:"✓"; position:absolute; left:0; top:0; font-family:var(--mono); color:var(--ml); font-weight:700; }
+  .checks li b{ color:var(--ink); font-weight:600; }
+  .chips{ display:flex; flex-wrap:wrap; gap:.6rem; margin:.4rem 0 0; padding:0; list-style:none; }
+  .chips li{ font-family:var(--mono); font-size:.98rem; padding:.44rem .8rem; border:1px solid var(--line-2); border-radius:6px; color:var(--ink); background:rgba(255,255,255,.02); }
+
+  .callout{ border:1px solid var(--warn-line); background:var(--warn-dim); border-radius:12px; padding:1.15rem 1.35rem; }
+  .callout .eyebrow{ color:var(--warn); }
+  .callout p{ margin:.3rem 0 0; color:var(--ink); font-size:1.12rem; line-height:1.5; }
+
+  /* title hero */
+  .hero{ text-align:left; }
+  .hero .eyebrow{ font-size:.9rem; letter-spacing:.22em; color:var(--muted); }
+  .hero h1{ font-size:clamp(2.5rem,7.4vw,5rem); line-height:.98; letter-spacing:-.03em; font-weight:800; margin:.65rem 0 0; text-wrap:balance; }
+  .hero h1 .g{ background:var(--synth); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero .thesis{ color:var(--muted); font-size:clamp(1.15rem,1.9vw,1.4rem); max-width:56ch; margin:1.1rem 0 0; line-height:1.5; }
+  .pulse-wrap{ position:relative; margin:1.3rem 0 1.7rem; height:84px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  #pulse{ display:block; width:100%; height:100%; }
+
+  /* ---------- FOOTER NAV ---------- */
+  .navbar{ position:absolute; left:0; right:0; bottom:0; z-index:40; padding:0 var(--pad) clamp(.7rem,2vh,1.15rem);
+    display:flex; align-items:center; gap:1rem; }
+  .segs{ display:flex; gap:5px; flex:1; align-items:center; }
+  .seg{ height:4px; flex:1; border-radius:3px; background:var(--line-2); cursor:pointer; border:0; padding:0; transition:background .25s, transform .2s; }
+  .seg:hover{ transform:scaleY(1.8); }
+  .seg.done{ background:var(--faint); }
+  .seg.on{ background:var(--ink); transform:scaleY(2); }
+  .seg[data-a=ml].on{ background:var(--ml);} .seg[data-a=dl].on{ background:var(--dl);}
+  .seg[data-a=warn].on{ background:var(--warn);} .seg[data-a=syn].on{ background:linear-gradient(90deg,var(--ml),var(--dl)); }
+  .navbtns{ display:flex; align-items:center; gap:.4rem; }
+  .nb{ font-family:var(--mono); font-size:1rem; color:var(--muted); background:rgba(255,255,255,.03); border:1px solid var(--line-2);
+    width:36px; height:32px; border-radius:8px; cursor:pointer; display:grid; place-items:center; transition:.18s; }
+  .nb:hover{ color:var(--ink); border-color:var(--ink); background:rgba(255,255,255,.07); }
+  .nb:focus-visible,.seg:focus-visible{ outline:2px solid var(--ml); outline-offset:2px; }
+  .hint{ font-family:var(--mono); font-size:.72rem; letter-spacing:.09em; color:var(--faint); white-space:nowrap; }
+  @media (max-width:680px){ .hint{ display:none; } }
+
+  /* ---------- OVERVIEW ---------- */
+  .overview{ position:absolute; inset:0; z-index:60; background:rgba(6,9,14,.86); backdrop-filter:blur(8px);
+    display:none; padding:clamp(2.5rem,6vw,4rem) var(--pad); overflow:auto; }
+  .overview.open{ display:block; }
+  .overview h2{ font-family:var(--mono); font-size:.86rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin:0 0 1.3rem; }
+  .ov-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:.75rem; }
+  @media (max-width:900px){ .ov-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .ov-grid{ grid-template-columns:1fr; } }
+  .ov-item{ text-align:left; border:1px solid var(--line); border-radius:9px; padding:.85rem .95rem; background:var(--panel);
+    cursor:pointer; color:var(--ink); transition:.18s; display:flex; flex-direction:column; gap:.35rem; min-height:96px; }
+  .ov-item:hover{ border-color:var(--line-2); transform:translateY(-2px); background:var(--panel-2); }
+  .ov-item .no{ font-family:var(--mono); font-size:.72rem; color:var(--faint); }
+  .ov-item .tt{ font-size:.98rem; font-weight:600; line-height:1.25; letter-spacing:-.01em; }
+  .ov-item .ow{ font-family:var(--mono); font-size:.7rem; color:var(--muted); margin-top:auto; }
+  .ov-item[data-a=ml]{ border-left:2px solid var(--ml); } .ov-item[data-a=dl]{ border-left:2px solid var(--dl); }
+  .ov-item[data-a=warn]{ border-left:2px solid var(--warn); } .ov-item[data-a=syn]{ border-left:2px solid var(--dl); }
+  .ov-close{ position:absolute; top:1.2rem; right:var(--pad); font-family:var(--mono); font-size:.95rem; color:var(--muted);
+    background:none; border:1px solid var(--line-2); border-radius:7px; padding:.35rem .7rem; cursor:pointer; }
+
+  @media (prefers-reduced-motion:reduce){
+    *{ animation:none !important; transition:none !important; }
+    .slide{ transition:opacity .01s !important; }
+    .reveal{ opacity:1 !important; transform:none !important; }
+  }
+</style>
+
+<div class="deck" id="deck">
+
+  <!-- TOP CHROME -->
+  <div class="chrome top">
+    <div class="brand"><span class="heartdot"></span> <b>GROUP&nbsp;01</b> · HEALTHCARE · APPLIED&nbsp;AI</div>
+    <div class="readout">
+      <span class="owner-chip"><span class="dot" id="ownerDot"></span><span id="ownerText">All</span></span>
+      <span class="counter"><b id="cur">01</b><span>&nbsp;/&nbsp;13</span></span>
+    </div>
+  </div>
+
+  <!-- ===================== SLIDE 01 — TITLE ===================== -->
+  <section class="slide active" data-owner="All members" data-accent="syn" data-title="Title">
+    <div class="stage hero">
+      <p class="eyebrow reveal">Traditional ML &nbsp;·&nbsp; Deep Learning &nbsp;·&nbsp; Clinical Deployment</p>
+      <h1 class="reveal">Two Intelligences,<br>One Patient. <span class="g">Which do you trust?</span></h1>
+      <div class="pulse-wrap reveal"><canvas id="pulse"></canvas></div>
+      <p class="thesis reveal">Interpretable ML vs. deep learning across two <b style="color:var(--ink)">real deployed systems</b> — Epic's Sepsis Model and Google Health's retinopathy CNN — then a phased adoption strategy and an ethical reckoning.</p>
+      <div class="members reveal" style="margin-top:1.5rem">
+        <div class="mcard a-ind"><div class="num">MEMBER 1</div><div class="name">Prajwal</div><div class="role">Industry Analyst</div></div>
+        <div class="mcard a-ml"><div class="num">MEMBER 2</div><div class="name">Sujana</div><div class="role">ML Specialist</div></div>
+        <div class="mcard a-dl"><div class="num">MEMBER 3</div><div class="name">Surya</div><div class="role">DL Specialist</div></div>
+        <div class="mcard a-syn"><div class="num">MEMBER 4</div><div class="name">Nam</div><div class="role">Comparativist · Strategist</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 02 — DATA LANDSCAPE ===================== -->
+  <section class="slide" data-owner="Member 1 · Prajwal" data-accent="ind" data-title="Healthcare Data Landscape">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Industry Overview · 01</span>
+        <h2 class="slide-title reveal">The Healthcare Data Landscape</h2>
+        <p class="slide-sub reveal">The <em>shape</em> of the data decides the tool.</p>
+      </div>
+      <div class="grid cols-2 slide-body">
+        <div class="card ml reveal">
+          <h3><span class="tag ml">Structured</span> Standardized</h3>
+          <ul class="list">
+            <li><b>EHR</b> — histories, meds, lab results</li>
+            <li><b>Billing</b> — ICD-10 &amp; CPT codes</li>
+            <li><b>Demographics</b> — population-health metrics</li>
+          </ul>
+          <p class="cite" style="margin-top:1rem">→ Tabular &amp; auditable — home of classical ML</p>
+        </div>
+        <div class="card dl reveal">
+          <h3><span class="tag dl">Unstructured</span> High-volume</h3>
+          <ul class="list">
+            <li><b>Imaging</b> — DICOM X-rays, MRIs, CT</li>
+            <li><b>Clinical text</b> — notes &amp; discharge summaries</li>
+            <li><b>Genomics</b> &amp; <b>real-time IoT vitals</b></li>
+          </ul>
+          <p class="cite" style="margin-top:1rem">→ Pixels &amp; signals — where deep learning earns its cost</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 03 — BOTTLENECKS & AI SHIFT ===================== -->
+  <section class="slide" data-owner="Member 1 · Prajwal" data-accent="ind" data-title="Bottlenecks & the AI Shift">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Industry Overview · 02</span>
+        <h2 class="slide-title reveal">Bottlenecks &amp; the AI Shift</h2>
+      </div>
+      <div class="grid cols-2 slide-body">
+        <div class="card warn reveal">
+          <h3><span class="tag warn">Bottlenecks</span></h3>
+          <ul class="list">
+            <li><b>Diagnostic error</b> — fatigue-driven misreads at scale</li>
+            <li><b>Physician burnout</b> — admin &amp; manual charting</li>
+            <li><b>Interoperability silos</b> — vendor-locked data</li>
+            <li><b>Emergency triage</b> — delays in packed ERs</li>
+          </ul>
+        </div>
+        <div class="card key reveal">
+          <h3><span class="tag ml">Baseline AI today</span></h3>
+          <ul class="list">
+            <li><b>Automated admin</b> — billing, coding, prior auth</li>
+            <li><b>Initial screening</b> — CAD as a "second pair of eyes"</li>
+            <li><b>Scheduling</b> — OR turnover &amp; staffing</li>
+          </ul>
+          <p class="cite reveal" style="margin-top:1rem"><b>Davenport &amp; Kalakota (2019)</b> · Tools: Gemini, Google Scholar</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 04 — ML: PROBLEM & COMPANY ===================== -->
+  <section class="slide" data-owner="Member 2 · Sujana" data-accent="ml" data-title="Traditional ML — Epic Sepsis Model">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Traditional ML · Epic Systems</span>
+        <h2 class="slide-title reveal">Catching Sepsis Early</h2>
+        <p class="slide-sub reveal">The <b>Epic Sepsis Model</b> — real-time early warning inside the EHR at hundreds of U.S. hospitals.</p>
+      </div>
+      <div class="grid cols-3 slide-body">
+        <div class="card ml reveal">
+          <p class="eyebrow">The stakes</p>
+          <div class="stat"><span class="n">~1M</span> <span class="u">U.S. sepsis cases / year</span></div>
+          <p class="lead" style="margin-top:.9rem">A top driver of hospital mortality — but the signs hide in routine vitals.</p>
+        </div>
+        <div class="card reveal">
+          <h3><span class="tag ml">Company</span></h3>
+          <p class="lead">Epic Systems — the leading U.S. EHR vendor. ESM runs inside its platform, e.g. <b>U-Michigan Medicine</b>.</p>
+        </div>
+        <div class="card reveal">
+          <h3><span class="tag ml">What it does</span></h3>
+          <p class="lead">Continuously scores patients and <b>alerts</b> when sepsis risk crosses a threshold.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 05 — ML: ALGORITHM & JUSTIFICATION ===================== -->
+  <section class="slide" data-owner="Member 2 · Sujana" data-accent="ml" data-title="Why Traditional ML Fits">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Algorithm · Justification</span>
+        <h2 class="slide-title reveal">Logistic Regression — and Why It Fits</h2>
+      </div>
+      <div class="grid cols-2 slide-body">
+        <div class="card ml reveal">
+          <h3><span class="tag ml">The model</span></h3>
+          <ul class="list">
+            <li><b>Penalized logistic regression</b> — interpretable, not a neural net</li>
+            <li><b>Features</b> — vitals, labs, meds &amp; demographics → one weighted risk score</li>
+          </ul>
+        </div>
+        <div class="card reveal">
+          <h3><span class="tag ml">Why ML wins here</span></h3>
+          <ul class="list">
+            <li><b>Structured data</b> — logistic regression's sweet spot</li>
+            <li><b>Interpretable</b> — coefficients show <em>why</em> a patient was flagged</li>
+            <li><b>Efficient</b> — real-time scoring, no heavy compute</li>
+          </ul>
+        </div>
+        <div class="callout reveal" style="grid-column:1/-1">
+          <p class="eyebrow">Honest caveat</p>
+          <p>External validation found <b>low positive predictive value and a high false-alert burden</b> — the gap between promise and real-world performance.</p>
+          <p class="cite" style="margin-top:.75rem"><b>Wong et al. (2021)</b>, JAMA Internal Medicine</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 06 — DL: PROBLEM & COMPANY ===================== -->
+  <section class="slide" data-owner="Member 3 · Surya" data-accent="dl" data-title="Deep Learning — Retinopathy CNN">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Deep Learning · Google Health</span>
+        <h2 class="slide-title reveal">Preventing Blindness at Scale</h2>
+        <p class="slide-sub reveal">A CNN grading retinal photos for <b>diabetic retinopathy</b>, where eye specialists are scarce.</p>
+      </div>
+      <div class="grid cols-3 slide-body">
+        <div class="card dl reveal">
+          <p class="eyebrow">The bottleneck</p>
+          <div class="stat"><span class="n">Too few</span> <span class="u">specialists per patient</span></div>
+          <p class="lead" style="margin-top:.9rem">A leading cause of <b>preventable blindness</b> — screening is scarce in rural India &amp; SE Asia.</p>
+        </div>
+        <div class="card reveal">
+          <h3><span class="tag dl">Company</span></h3>
+          <p class="lead">Google Research, deployed via <b>Sankara Nethralaya</b> (India) &amp; clinics in Thailand.</p>
+        </div>
+        <div class="card reveal">
+          <h3><span class="tag dl">What it does</span></h3>
+          <p class="lead">Auto-grades fundus photos for referable DR — <b>screening at scale</b>, catching disease early.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 07 — DL: ARCHITECTURE & JUSTIFICATION ===================== -->
+  <section class="slide" data-owner="Member 3 · Surya" data-accent="dl" data-title="Why Traditional ML Falls Short">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Architecture · Justification</span>
+        <h2 class="slide-title reveal">A CNN — and Why ML Falls Short</h2>
+      </div>
+      <div class="grid cols-2 slide-body">
+        <div class="card dl reveal">
+          <h3><span class="tag dl">Architecture &amp; data</span></h3>
+          <ul class="list">
+            <li><b>Inception-v3 CNN</b> — pretrained, then fine-tuned</li>
+            <li><b>~128,000 images</b>, each graded by 3–7 of 54 ophthalmologists</li>
+            <li>Subtle spatial signs no hand-crafted feature captures</li>
+          </ul>
+        </div>
+        <div class="card ml reveal">
+          <h3><span class="tag ml">Why ML plateaus</span></h3>
+          <ul class="list">
+            <li><b>Manual features</b> discard fine spatial detail</li>
+            <li>Can't match <b>learned convolutional filters</b></li>
+            <li>CNN hit <b>90%+ sensitivity &amp; specificity</b> — ML plateaus below</li>
+          </ul>
+          <p class="cite" style="margin-top:1rem"><b>Gulshan et al. (2016)</b>, JAMA</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 08 — DATA COMPLEXITY BLUEPRINT ===================== -->
+  <section class="slide" data-owner="Member 4 · Nam" data-accent="syn" data-title="Data Complexity Blueprint">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Head-to-Head · 01</span>
+        <h2 class="slide-title reveal"><span class="g">Data Complexity Blueprint</span></h2>
+      </div>
+      <div class="slide-body">
+        <div class="blueprint reveal">
+          <div class="bp-row bp-head">
+            <div class="dim">Dimension</div>
+            <div class="c-ml">Traditional ML <b>Epic ESM</b></div>
+            <div class="c-dl">Deep Learning <b>Google CNN</b></div>
+          </div>
+          <div class="bp-row">
+            <div class="dim">Data Type</div>
+            <div class="c-ml">Structured, tabular</div>
+            <div class="c-dl">Unstructured images, pixels</div>
+          </div>
+          <div class="bp-row">
+            <div class="dim">Features</div>
+            <div class="c-ml">Manual — experts pre-define</div>
+            <div class="c-dl">Automatic — learned end-to-end</div>
+          </div>
+          <div class="bp-row">
+            <div class="dim">Dataset</div>
+            <div class="c-ml">Moderate — 100Ks of EHR rows</div>
+            <div class="c-dl">Large — 128K+ graded images</div>
+          </div>
+          <div class="bp-row">
+            <div class="dim">Interpretability</div>
+            <div class="c-ml">High — coefficients auditable</div>
+            <div class="c-dl">Low — black box (Grad-CAM/SHAP)</div>
+          </div>
+          <div class="bp-row">
+            <div class="dim">Compute</div>
+            <div class="c-ml">Low — real-time, no GPU</div>
+            <div class="c-dl">High — GPU clusters to train</div>
+          </div>
+          <div class="bp-row">
+            <div class="dim">Deployment</div>
+            <div class="c-ml">Silent scoring in workflow</div>
+            <div class="c-dl">Point-of-care specialist surrogate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 09 · Member 4 · Nam (merged 09+10) — TRADE-OFFS & CROSS-VIABILITY ============== -->
+  <section class="slide" data-owner="Member 4 · Nam" data-accent="syn" data-title="Trade-offs & Cross-Viability">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Head-to-Head · 02</span>
+        <h2 class="slide-title reveal"><span class="g">Trade-offs — and Could They Swap?</span></h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid cols-2 reveal">
+          <div class="card dl">
+            <h3><span class="tag dl">DL for sepsis?</span></h3>
+            <p class="lead"><b style="color:var(--ink)">Theoretically yes</b> — transformers on EHR timelines catch time-dependent patterns, but lose the interpretability legal &amp; clinical teams need; the FDA favors explainability. <b style="color:var(--dl)">Viable — not yet appropriate.</b></p>
+          </div>
+          <div class="card ml">
+            <h3><span class="tag ml">ML for retinopathy?</span></h3>
+            <p class="lead"><b style="color:var(--ink)">Technically yes</b> — SVM + hand-crafted features can grade images, but the accuracy ceiling is too low; it misses microaneurysms &amp; hemorrhages. That gap isn't a trade-off — <b style="color:var(--warn)">it's a safety failure.</b></p>
+          </div>
+        </div>
+        <div class="blueprint reveal" style="margin-top:clamp(1rem,1.9vw,1.5rem)">
+          <div class="bp-row bp-head">
+            <div class="dim">Axis</div>
+            <div class="c-ml">Traditional ML</div>
+            <div class="c-dl">Deep Learning</div>
+          </div>
+          <div class="bp-row">
+            <div class="dim">Cost</div>
+            <div class="c-ml">Low — standard servers, no GPU</div>
+            <div class="c-dl">High — GPUs + expert annotation</div>
+          </div>
+          <div class="bp-row">
+            <div class="dim">Regulatory<br>(FDA SaMD)</div>
+            <div class="c-ml">Favorable — transparent, easier 510(k)</div>
+            <div class="c-dl">Challenging — De Novo, bias testing</div>
+          </div>
+          <div class="bp-row">
+            <div class="dim">Clinical Risk</div>
+            <div class="c-ml">Alert fatigue — low PPV floods clinicians</div>
+            <div class="c-dl">Demographic bias from skewed data</div>
+          </div>
+        </div>
+        <div class="callout reveal" style="margin-top:1.1rem; border-color:var(--line-2); background:rgba(255,255,255,.03)">
+          <p class="eyebrow" style="color:var(--muted)">Core tension</p>
+          <p>Interpretability and accuracy are often <b>inversely correlated</b>. The right choice depends on false-positive vs. false-negative severity, the regulatory context, and data-infrastructure maturity.</p>
+        </div>
+        <p class="cite reveal" style="margin-top:1rem"><b>Beam &amp; Kohane (2018)</b> · <b>Gulshan et al. (2016)</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 10 · Member 4 · Nam (merged 11+12) — STRATEGY & 5-YEAR HORIZON ============== -->
+  <section class="slide" data-owner="Member 4 · Nam" data-accent="syn" data-title="Strategy & 5-Year Horizon">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Strategic Recommendation</span>
+        <h2 class="slide-title reveal">Roadmap to 2031</h2>
+        <p class="slide-sub reveal">Sequence the investment — then let the five-year horizon pull it forward.</p>
+      </div>
+      <div class="slide-body">
+        <div class="track reveal">
+          <div class="connector"></div>
+          <div class="phase p1">
+            <div class="ph-no">PHASE 1</div><div class="ph-yr">Year 0–1</div>
+            <h4>ML First</h4>
+            <p class="lead">Interpretable models on structured problems. Build clean pipelines, governance, clinician trust &amp; ROI.</p>
+          </div>
+          <div class="phase p2">
+            <div class="ph-no">PHASE 2</div><div class="ph-yr">Year 1–2</div>
+            <h4>Targeted DL Pilots</h4>
+            <p class="lead">DL only where accuracy wins &amp; big labeled sets exist — imaging. <b>Human-in-the-loop mandatory.</b></p>
+          </div>
+          <div class="phase p3">
+            <div class="ph-no">PHASE 3</div><div class="ph-yr">Year 3–5</div>
+            <h4>Multimodal AI</h4>
+            <p class="lead">Fuse both — risk scores + note NLP + imaging. Add <b>federated learning</b> across institutions.</p>
+          </div>
+        </div>
+        <p class="eyebrow reveal" style="margin:clamp(1.3rem,2.6vh,1.9rem) 0 .1rem">Beyond — the five-year horizon · 2026–2031</p>
+        <div class="grid cols-3 reveal">
+          <div class="card key">
+            <h3>Multimodal Models</h3>
+            <p class="lead">One model ingesting labs, notes, imaging &amp; wearables — Med-PaLM 2, Nuance DAX. Standard for tertiary care.</p>
+          </div>
+          <div class="card key">
+            <h3>Federated Learning</h3>
+            <p class="lead">Share <b>gradients, not raw data</b> — high-accuracy models without HIPAA violations. The biggest unlock ahead.</p>
+          </div>
+          <div class="card key">
+            <h3>Regulatory Maturation</h3>
+            <p class="lead">FDA SaMD &amp; EU AI Act tighten — continuous monitoring &amp; bias audits. Early governance wins.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 11 · Member 4 · Nam (merged 13+14) — THE ETHICAL RECKONING ============== -->
+  <section class="slide" data-owner="Member 4 · Nam" data-accent="warn" data-title="The Ethical Reckoning">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Ethical Reflection</span>
+        <h2 class="slide-title reveal">The Ethical Reckoning</h2>
+        <p class="slide-sub reveal">Three risk zones — and the four commitments that answer them.</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid cols-3 reveal" style="align-items:start">
+          <div class="card warn">
+            <h3><span class="tag warn">01</span> Model Bias</h3>
+            <p class="lead">Obermeyer (2019): a risk model used <b>cost as a proxy for need</b> — "learning" Black patients were healthier than they were.</p>
+            <div class="stat" style="margin-top:.9rem"><span class="n" style="color:var(--warn)">17.7 → 46.5%</span></div>
+            <p class="cite" style="margin-top:.4rem">added-care share after fixing the label — an <b>84% cut</b> in racial bias.</p>
+          </div>
+          <div class="card warn">
+            <h3><span class="tag warn">02</span> Black-Box Liability</h3>
+            <p class="lead">When DL causes harm, who's liable — hospital, vendor, or clinician? <b>"The algorithm flagged it"</b> isn't a defensible answer. ML's coefficients can be reasoned about.</p>
+          </div>
+          <div class="card warn">
+            <h3><span class="tag warn">03</span> Data Privacy</h3>
+            <p class="lead">Every stage is a leak vector. "Anonymized" data can be <b>re-identified</b> — HIPAA is a floor. Needs differential privacy &amp; strict access.</p>
+          </div>
+        </div>
+        <div class="card key reveal" style="margin-top:clamp(1rem,1.9vw,1.5rem)">
+          <h3><span class="tag ml">The response — four commitments</span></h3>
+          <ul class="checks" style="display:grid; grid-template-columns:1fr 1fr; gap:.7rem 1.6rem; margin-top:.5rem">
+            <li><b>Human-in-the-loop</b> — no irreversible action without a clinician confirming.</li>
+            <li><b>Continuous auditing</b> — monthly monitoring by race, sex, age &amp; insurance.</li>
+            <li><b>Compliance baseline</b> — FDA SaMD, HIPAA &amp; EU AI Act as the floor, not overhead.</li>
+            <li><b>Model cards</b> — public docs on training demographics, limits &amp; subgroup validation.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 15 — TOOLS & VERIFICATION ===================== -->
+  <section class="slide" data-owner="All members" data-accent="ind" data-title="Tools & Verification">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Methodology</span>
+        <h2 class="slide-title reveal">Tools &amp; Verification</h2>
+      </div>
+      <div class="grid cols-2 slide-body">
+        <div class="card key reveal">
+          <h3><span class="tag ml">Platforms &amp; AI tools</span></h3>
+          <ul class="chips">
+            <li>Google Gemini</li><li>Google Scholar</li><li>PubMed</li><li>JAMA Network</li>
+            <li>Science (AAAS)</li><li>Semantic Scholar</li>
+          </ul>
+        </div>
+        <div class="card key reveal">
+          <h3><span class="tag ml">Verification</span></h3>
+          <ul class="checks">
+            <li><b>Peer-reviewed</b> — indexed journals (JAMA, Science), no preprints</li>
+            <li><b>DOIs resolve</b> to the published papers</li>
+            <li><b>Affiliations verified</b> — U-Michigan, Harvard, UC Berkeley</li>
+            <li><b>Recent &amp; relevant</b> — 2016–2021; Obermeyer cited 3,900+×</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 16 — REFERENCES ===================== -->
+  <section class="slide" data-owner="All members" data-accent="ind" data-title="References (APA)">
+    <div class="stage">
+      <div class="slide-head">
+        <span class="kicker reveal">Peer-reviewed sources · APA</span>
+        <h2 class="slide-title reveal">References</h2>
+      </div>
+      <div class="slide-body">
+        <div class="refs reveal">
+          <p class="ref">Beam, A. L., &amp; Kohane, I. S. (2018). Big data and machine learning in health care. <i>JAMA, 319</i>(13), 1317–1318. <a href="https://doi.org/10.1001/jama.2017.18391" target="_blank" rel="noreferrer noopener">https://doi.org/10.1001/jama.2017.18391</a></p>
+          <p class="ref">Davenport, T., &amp; Kalakota, R. (2019). The potential for artificial intelligence in healthcare. <i>Future Healthcare Journal, 6</i>(2), 94–98. <a href="https://doi.org/10.7861/futurehosp.6-2-94" target="_blank" rel="noreferrer noopener">https://doi.org/10.7861/futurehosp.6-2-94</a></p>
+          <p class="ref">Gulshan, V., Peng, L., Coram, M., Stumpe, M. C., Wu, D., Narayanaswamy, A., … Webster, D. R. (2016). Development and validation of a deep learning algorithm for detection of diabetic retinopathy in retinal fundus photographs. <i>JAMA, 316</i>(22), 2402–2410. <a href="https://doi.org/10.1001/jama.2016.17216" target="_blank" rel="noreferrer noopener">https://doi.org/10.1001/jama.2016.17216</a></p>
+          <p class="ref">Obermeyer, Z., Powers, B., Vogeli, C., &amp; Mullainathan, S. (2019). Dissecting racial bias in an algorithm used to manage the health of populations. <i>Science, 366</i>(6464), 447–453. <a href="https://doi.org/10.1126/science.aax2342" target="_blank" rel="noreferrer noopener">https://doi.org/10.1126/science.aax2342</a></p>
+          <p class="ref">Wong, A., Otles, E., Donnelly, J. P., Krumm, A., McCullough, J., DeTroyer-Cooley, O., … Singh, K. (2021). External validation of a widely implemented proprietary sepsis prediction model in hospitalized patients. <i>JAMA Internal Medicine, 181</i>(8), 1065–1070. <a href="https://doi.org/10.1001/jamainternmed.2021.2626" target="_blank" rel="noreferrer noopener">https://doi.org/10.1001/jamainternmed.2021.2626</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW PANEL -->
+  <div class="overview" id="overview">
+    <button class="ov-close" id="ovClose">ESC ✕</button>
+    <h2>Slide Overview — jump to any slide</h2>
+    <div class="ov-grid" id="ovGrid"></div>
+  </div>
+
+  <!-- FOOTER NAV -->
+  <div class="navbar">
+    <div class="segs" id="segs"></div>
+    <div class="navbtns">
+      <button class="nb" id="btnGrid" title="Overview (O)" aria-label="Overview">▦</button>
+      <button class="nb" id="btnPrev" title="Previous (←)" aria-label="Previous">‹</button>
+      <button class="nb" id="btnNext" title="Next (→)" aria-label="Next">›</button>
+    </div>
+    <span class="hint">← → NAVIGATE · O OVERVIEW · F FULLSCREEN</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var i = 0;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var accentColor = { ml:'var(--ml)', dl:'var(--dl)', warn:'var(--warn)', syn:'var(--dl)', ind:'var(--muted)' };
+  var pad = function(n){ return (n<10?'0':'')+n; };
+
+  var segs = document.getElementById('segs');
+  slides.forEach(function(s, idx){
+    var b = document.createElement('button');
+    b.className = 'seg'; b.setAttribute('data-a', s.getAttribute('data-accent'));
+    b.setAttribute('aria-label','Go to slide '+(idx+1)+': '+s.getAttribute('data-title'));
+    b.title = pad(idx+1)+' · '+s.getAttribute('data-title');
+    b.addEventListener('click', function(){ go(idx); });
+    segs.appendChild(b);
+  });
+  var segEls = Array.prototype.slice.call(segs.children);
+
+  var ovGrid = document.getElementById('ovGrid');
+  slides.forEach(function(s, idx){
+    var it = document.createElement('button');
+    it.className = 'ov-item'; it.setAttribute('data-a', s.getAttribute('data-accent'));
+    it.innerHTML = '<span class="no">SLIDE '+pad(idx+1)+'</span>'+
+      '<span class="tt">'+s.getAttribute('data-title')+'</span>'+
+      '<span class="ow">'+s.getAttribute('data-owner')+'</span>';
+    it.addEventListener('click', function(){ go(idx); closeOverview(); });
+    ovGrid.appendChild(it);
+  });
+
+  var cur = document.getElementById('cur');
+  var ownerText = document.getElementById('ownerText');
+  var ownerDot = document.getElementById('ownerDot');
+
+  function go(n){
+    n = Math.max(0, Math.min(total-1, n));
+    slides[i].classList.remove('active');
+    i = n;
+    slides[i].classList.add('active');
+    slides[i].querySelector('.stage').scrollTop = 0;
+    update();
+  }
+  function update(){
+    cur.textContent = pad(i+1);
+    var s = slides[i];
+    ownerText.textContent = s.getAttribute('data-owner');
+    ownerDot.style.background = accentColor[s.getAttribute('data-accent')] || 'var(--muted)';
+    segEls.forEach(function(el, idx){
+      el.classList.toggle('on', idx===i);
+      el.classList.toggle('done', idx<i);
+    });
+    if(location.hash !== '#s'+(i+1)){ history.replaceState(null,'','#s'+(i+1)); }
+  }
+  function next(){ go(i+1); }
+  function prev(){ go(i-1); }
+
+  document.getElementById('btnNext').addEventListener('click', next);
+  document.getElementById('btnPrev').addEventListener('click', prev);
+
+  var overview = document.getElementById('overview');
+  function closeOverview(){ overview.classList.remove('open'); }
+  document.getElementById('btnGrid').addEventListener('click', function(){ overview.classList.toggle('open'); });
+  document.getElementById('ovClose').addEventListener('click', closeOverview);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){ e.preventDefault(); if(overview.classList.contains('open'))return; next(); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); if(overview.classList.contains('open'))return; prev(); }
+    else if(e.key==='Home'){ e.preventDefault(); go(0); }
+    else if(e.key==='End'){ e.preventDefault(); go(total-1); }
+    else if(e.key==='o'||e.key==='O'){ overview.classList.toggle('open'); }
+    else if(e.key==='Escape'){ closeOverview(); }
+    else if(e.key==='f'||e.key==='F'){ var d=document.getElementById('deck'); if(!document.fullscreenElement){ if(d.requestFullscreen) d.requestFullscreen(); } else { document.exitFullscreen(); } }
+    else if(/^[1-9]$/.test(e.key)){ go(parseInt(e.key,10)-1); }
+  });
+
+  var tx=0, ty=0;
+  document.addEventListener('touchstart', function(e){ tx=e.touches[0].clientX; ty=e.touches[0].clientY; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    var dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)){ dx<0?next():prev(); }
+  }, {passive:true});
+
+  var m = /^#s(\d+)$/.exec(location.hash);
+  if(m){ var n=parseInt(m[1],10)-1; if(n>0&&n<total){ i=0; go(n); } }
+  update();
+
+  // ---- ECG pulse canvas (title slide) ----
+  var cv = document.getElementById('pulse');
+  if(cv){
+    var ctx = cv.getContext('2d');
+    var W, H, dpr = Math.min(window.devicePixelRatio||1, 2);
+    function resize(){
+      var r = cv.getBoundingClientRect();
+      W = r.width; H = r.height;
+      cv.width = W*dpr; cv.height = H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function beat(t){
+      var x = t;
+      function g(c,w,a){ return a*Math.exp(-Math.pow((x-c)/w,2)); }
+      return g(0.18,0.018,6) - g(0.30,0.010,10) + g(0.335,0.012,46) - g(0.365,0.012,14) + g(0.55,0.045,14);
+    }
+    var offset = 0, raf;
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      var grad = ctx.createLinearGradient(0,0,W,0);
+      grad.addColorStop(0,'rgba(52,227,192,0.15)');
+      grad.addColorStop(0.5,'rgba(52,227,192,0.9)');
+      grad.addColorStop(1,'rgba(139,123,255,0.95)');
+      var baseline = H*0.62, cycle = W*0.34;
+      ctx.lineWidth = 2.2; ctx.strokeStyle = grad; ctx.lineJoin='round'; ctx.lineCap='round';
+      ctx.beginPath();
+      for(var px=0; px<=W; px+=2){
+        var phase = ((px+offset)/cycle) % 1;
+        var y = baseline - beat(phase)*(H*0.14);
+        if(px===0) ctx.moveTo(px,y); else ctx.lineTo(px,y);
+      }
+      ctx.stroke();
+      var lp = ((W+offset)/cycle)%1, ly = baseline - beat(lp)*(H*0.14);
+      ctx.fillStyle = '#8B7BFF';
+      ctx.beginPath(); ctx.arc(W-1, ly, 3.2, 0, Math.PI*2); ctx.fill();
+      offset += 1.6;
+      raf = requestAnimationFrame(draw);
+    }
+    if(reduce){ offset = W*0.5; draw(); cancelAnimationFrame(raf); }
+    else { draw(); }
+  }
+})();
+</script>
+</body>
+</html>
