@@ -30,6 +30,26 @@
     --pad:clamp(1.5rem,4.2vw,4.2rem);
   }
 
+  html[data-theme="light"]{
+    --bg:#FAFBFC; --bg-2:#F5F6F8; --panel:#FFFFFF; --panel-2:#F8F9FB;
+    --line:rgba(0,0,0,.08); --line-2:rgba(0,0,0,.14);
+    --ink:#1A202C; --muted:#5A6B7A; --faint:#8795A5;
+    --ml:#169B86; --ml-dim:rgba(22,155,134,.12); --ml-line:rgba(22,155,134,.35);
+    --dl:#6B5FBB; --dl-dim:rgba(107,95,187,.12); --dl-line:rgba(107,95,187,.35);
+    --warn:#D98A2B; --warn-dim:rgba(217,138,43,.12); --warn-line:rgba(217,138,43,.35);
+  }
+
+  @media (prefers-color-scheme: light){
+    html:not([data-theme="dark"]){
+      --bg:#FAFBFC; --bg-2:#F5F6F8; --panel:#FFFFFF; --panel-2:#F8F9FB;
+      --line:rgba(0,0,0,.08); --line-2:rgba(0,0,0,.14);
+      --ink:#1A202C; --muted:#5A6B7A; --faint:#8795A5;
+      --ml:#169B86; --ml-dim:rgba(22,155,134,.12); --ml-line:rgba(22,155,134,.35);
+      --dl:#6B5FBB; --dl-dim:rgba(107,95,187,.12); --dl-line:rgba(107,95,187,.35);
+      --warn:#D98A2B; --warn-dim:rgba(217,138,43,.12); --warn-line:rgba(217,138,43,.35);
+    }
+  }
+
   html,body{ margin:0; height:100%; background:var(--bg); }
   body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialiased; overflow:hidden; }
 
@@ -201,6 +221,11 @@
     width:36px; height:32px; border-radius:8px; cursor:pointer; display:grid; place-items:center; transition:.18s; }
   .nb:hover{ color:var(--ink); border-color:var(--ink); background:rgba(255,255,255,.07); }
   .nb:focus-visible,.seg:focus-visible{ outline:2px solid var(--ml); outline-offset:2px; }
+  .theme-toggle{ display:flex; align-items:center; gap:.5rem; padding:0 .6rem; }
+  .theme-toggle-btn{ background:none; border:1px solid var(--line-2); border-radius:20px; padding:.35rem .7rem; color:var(--muted);
+    font-family:var(--mono); font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:.18s; }
+  .theme-toggle-btn:hover{ color:var(--ink); border-color:var(--ink); }
+  .theme-toggle-btn.active{ color:var(--ink); border-color:var(--ink); background:rgba(255,255,255,.08); }
   .hint{ font-family:var(--mono); font-size:.72rem; letter-spacing:.09em; color:var(--faint); white-space:nowrap; }
   @media (max-width:680px){ .hint{ display:none; } }
 
@@ -658,10 +683,16 @@
   <!-- FOOTER NAV -->
   <div class="navbar">
     <div class="segs" id="segs"></div>
-    <div class="navbtns">
-      <button class="nb" id="btnGrid" title="Overview (O)" aria-label="Overview">▦</button>
-      <button class="nb" id="btnPrev" title="Previous (←)" aria-label="Previous">‹</button>
-      <button class="nb" id="btnNext" title="Next (→)" aria-label="Next">›</button>
+    <div style="display:flex; align-items:center; gap:1rem; flex:1; justify-content:flex-end;">
+      <div class="theme-toggle">
+        <button class="theme-toggle-btn active" id="themeDark" data-theme="dark" title="Dark theme">Dark</button>
+        <button class="theme-toggle-btn" id="themeLight" data-theme="light" title="Light theme">Light</button>
+      </div>
+      <div class="navbtns">
+        <button class="nb" id="btnGrid" title="Overview (O)" aria-label="Overview">▦</button>
+        <button class="nb" id="btnPrev" title="Previous (←)" aria-label="Previous">‹</button>
+        <button class="nb" id="btnNext" title="Next (→)" aria-label="Next">›</button>
+      </div>
     </div>
     <span class="hint">← → NAVIGATE · O OVERVIEW · F FULLSCREEN</span>
   </div>
@@ -669,6 +700,30 @@
 
 <script>
 (function(){
+  // ---- THEME SETUP ----
+  var initTheme = function(){
+    var saved = localStorage.getItem('slide-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+    var isDark = saved === 'dark';
+    document.getElementById('themeDark').classList.toggle('active', isDark);
+    document.getElementById('themeLight').classList.toggle('active', !isDark);
+  };
+  initTheme();
+
+  document.getElementById('themeDark').addEventListener('click', function(){
+    localStorage.setItem('slide-theme', 'dark');
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('themeDark').classList.add('active');
+    document.getElementById('themeLight').classList.remove('active');
+  });
+
+  document.getElementById('themeLight').addEventListener('click', function(){
+    localStorage.setItem('slide-theme', 'light');
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('themeDark').classList.remove('active');
+    document.getElementById('themeLight').classList.add('active');
+  });
+
   var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
   var total = slides.length;
   var i = 0;
