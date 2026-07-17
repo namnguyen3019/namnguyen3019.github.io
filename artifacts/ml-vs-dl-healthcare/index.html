@@ -4,14 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Traditional ML vs. Deep Learning in Healthcare — Group 01</title>
-<meta name="description" content="A comparative slide deck on interpretable machine learning versus deep learning across two deployed clinical AI systems — Epic's Sepsis Model and Google Health's diabetic-retinopathy CNN — with a phased adoption strategy and ethical analysis.">
+<meta name="description" content="A comparative slide deck on interpretable machine learning versus deep learning across two deployed clinical AI systems.">
 <meta name="author" content="Nam Nguyen">
 <link rel="icon" href="/favicon.ico">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Traditional ML vs. Deep Learning in Healthcare — Group 01">
-<meta property="og:description" content="A comparative slide deck on interpretable machine learning versus deep learning across two deployed clinical AI systems — Epic's Sepsis Model and Google Health's diabetic-retinopathy CNN — with a phased adoption strategy and ethical analysis.">
-<meta property="og:url" content="https://namnguyen.bio/artifacts/ml-vs-dl-healthcare/">
-<meta name="twitter:card" content="summary">
 </head>
 <body>
 <style>
@@ -497,11 +492,11 @@
         <div class="grid cols-2 reveal">
           <div class="card dl">
             <h3><span class="tag dl">DL for sepsis?</span></h3>
-            <p class="lead"><b style="color:var(--ink)">Theoretically yes</b> — transformers on EHR timelines catch time-dependent patterns, but lose the interpretability legal &amp; clinical teams need; the FDA favors explainability. <b style="color:var(--dl)">Viable — not yet appropriate.</b></p>
+            <p class="lead"><b style="color:var(--ink)">Theoretically yes</b> — but loses interpretability the FDA requires. <b style="color:var(--dl)">Viable, not yet appropriate.</b></p>
           </div>
           <div class="card ml">
             <h3><span class="tag ml">ML for retinopathy?</span></h3>
-            <p class="lead"><b style="color:var(--ink)">Technically yes</b> — SVM + hand-crafted features can grade images, but the accuracy ceiling is too low; it misses microaneurysms &amp; hemorrhages. That gap isn't a trade-off — <b style="color:var(--warn)">it's a safety failure.</b></p>
+            <p class="lead"><b style="color:var(--ink)">Technically yes</b> — but misses microaneurysms &amp; hemorrhages. <b style="color:var(--warn)">A safety failure.</b></p>
           </div>
         </div>
         <div class="blueprint reveal" style="margin-top:clamp(1rem,1.9vw,1.5rem)">
@@ -526,11 +521,6 @@
             <div class="c-dl">Demographic bias from skewed data</div>
           </div>
         </div>
-        <div class="callout reveal" style="margin-top:1.1rem; border-color:var(--line-2); background:rgba(255,255,255,.03)">
-          <p class="eyebrow" style="color:var(--muted)">Core tension</p>
-          <p>Interpretability and accuracy are often <b>inversely correlated</b>. The right choice depends on false-positive vs. false-negative severity, the regulatory context, and data-infrastructure maturity.</p>
-        </div>
-        <p class="cite reveal" style="margin-top:1rem"><b>Beam &amp; Kohane (2018)</b> · <b>Gulshan et al. (2016)</b></p>
       </div>
     </div>
   </section>
@@ -593,26 +583,24 @@
         <div class="grid cols-3 reveal" style="align-items:start">
           <div class="card warn">
             <h3><span class="tag warn">01</span> Model Bias</h3>
-            <p class="lead">Obermeyer (2019): a risk model used <b>cost as a proxy for need</b> — "learning" Black patients were healthier than they were.</p>
-            <div class="stat" style="margin-top:.9rem"><span class="n" style="color:var(--warn)">17.7 → 46.5%</span></div>
-            <p class="cite" style="margin-top:.4rem">added-care share after fixing the label — an <b>84% cut</b> in racial bias.</p>
+            <p class="lead">Obermeyer (2019): a model learned to discriminate based on flawed labels. <b>84% cut</b> in racial bias after fixing.</p>
           </div>
           <div class="card warn">
-            <h3><span class="tag warn">02</span> Black-Box Liability</h3>
-            <p class="lead">When DL causes harm, who's liable — hospital, vendor, or clinician? <b>"The algorithm flagged it"</b> isn't a defensible answer. ML's coefficients can be reasoned about.</p>
+            <h3><span class="tag warn">02</span> Liability</h3>
+            <p class="lead">When harm occurs, who's liable? ML's coefficients can be audited; DL's black box cannot be defended in court.</p>
           </div>
           <div class="card warn">
-            <h3><span class="tag warn">03</span> Data Privacy</h3>
-            <p class="lead">Every stage is a leak vector. "Anonymized" data can be <b>re-identified</b> — HIPAA is a floor. Needs differential privacy &amp; strict access.</p>
+            <h3><span class="tag warn">03</span> Privacy</h3>
+            <p class="lead">"Anonymized" data can be re-identified. HIPAA is a floor. Differential privacy &amp; strict access mandatory.</p>
           </div>
         </div>
         <div class="card key reveal" style="margin-top:clamp(1rem,1.9vw,1.5rem)">
-          <h3><span class="tag ml">The response — four commitments</span></h3>
-          <ul class="checks" style="display:grid; grid-template-columns:1fr 1fr; gap:.7rem 1.6rem; margin-top:.5rem">
-            <li><b>Human-in-the-loop</b> — no irreversible action without a clinician confirming.</li>
-            <li><b>Continuous auditing</b> — monthly monitoring by race, sex, age &amp; insurance.</li>
-            <li><b>Compliance baseline</b> — FDA SaMD, HIPAA &amp; EU AI Act as the floor, not overhead.</li>
-            <li><b>Model cards</b> — public docs on training demographics, limits &amp; subgroup validation.</li>
+          <h3><span class="tag ml">Four commitments</span></h3>
+          <ul class="checks" style="display:grid; grid-template-columns:1fr 1fr; gap:.6rem 1.3rem; margin-top:.4rem; font-size:1rem; line-height:1.35">
+            <li><b>Human-in-the-loop</b> — clinician confirms before action.</li>
+            <li><b>Continuous audit</b> — track by race, sex, age &amp; insurance.</li>
+            <li><b>Compliance</b> — FDA SaMD, HIPAA &amp; EU AI Act as floor.</li>
+            <li><b>Model cards</b> — public docs on training &amp; limits.</li>
           </ul>
         </div>
       </div>
