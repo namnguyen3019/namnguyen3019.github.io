@@ -27,7 +27,7 @@ const hero = {
   stats: [
     { n: "8+", l: "Years full-stack" },
     { n: "3", l: "Industries · Retail · Energy · SaaS" },
-    { n: "1", l: "Documented artifact" },
+    { n: "2", l: "Documented artifacts" },
     { n: "MS", l: "Management Info Systems" },
   ],
 };
@@ -74,12 +74,48 @@ const artifacts = [
       },
     ],
   },
+  {
+    id: "ar-02",
+    title: "Traditional ML vs. Deep Learning in Healthcare",
+    tag: "Applied AI · Comparative Deck",
+    year: "2026 · Applied AI · Group Presentation",
+    indexMeta: "Applied AI · 2026",
+    lead:
+      "A four-member group deck weighing interpretable machine learning against deep learning across two systems already running in hospitals — Epic's Sepsis Model and Google Health's diabetic-retinopathy CNN. My role was the comparative, strategic, and ethical synthesis that turns the contrast into an adoption decision.",
+    objective:
+      "Cut through the abstract 'ML vs. deep learning' debate by grounding it in two deployed clinical systems, then answer the question a healthcare CTO actually faces: which paradigm to adopt, when, and at what risk.",
+    process: [
+      "Mapped the head-to-head trade-space in a data-complexity blueprint — data type, feature engineering, dataset size, interpretability, compute, and deployment — for Epic's tabular sepsis model versus Google's image CNN.",
+      "Stress-tested whether either system could swap paradigms, set against a three-axis trade-off — cost, FDA / SaMD regulatory path, and clinical risk — to show where interpretability and accuracy pull apart.",
+      "Turned the comparison into a phased adoption roadmap — ML-first, targeted deep-learning pilots, then multimodal and federated learning — projected against a five-year horizon to 2031.",
+      "Closed on the ethical reckoning: model bias (Obermeyer, 2019), black-box liability, and data privacy, each answered with a concrete governance commitment.",
+    ],
+    tools: [
+      "Comparative Analysis",
+      "Evidence Synthesis",
+      "Google Gemini",
+      "Google Scholar",
+      "PubMed",
+      "JAMA Network",
+      "HTML / CSS / JS",
+    ],
+    value:
+      "Shows I can take two competing technical approaches and produce a decision, not just a comparison — grounding the recommendation in deployed systems, regulatory reality, cost, and peer-reviewed evidence a clinical stakeholder would accept.",
+    transferable:
+      "A reusable way to choose between ML and deep learning: judge the shape of the data and the cost of a wrong answer (false positive vs. false negative), weigh interpretability against accuracy, and sequence adoption — interpretable models first, deep learning only where accuracy is a safety requirement.",
+    links: [
+      {
+        label: "View the deck",
+        href: "/artifacts/ml-vs-dl-healthcare/",
+      },
+    ],
+  },
 ];
 
 const profile = {
   summary: [
-    "Technology professional with extensive experience designing and developing scalable enterprise software systems, AI-assisted development workflows, cloud infrastructure, and SaaS platforms that support operational efficiency and digital modernization.",
-    "My work spans renewable energy, retail commerce, and SaaS technology services — from large-scale operational systems to optimizing software delivery pipelines and contributing to AI-enabled engineering modernization. Currently focused on scalable digital infrastructure, AI-assisted SDLC practices, and cloud-based SaaS innovation.",
+    "Born in northern Vietnam, I was raised on hard work and big dreams. After school I wasn't just doing homework—I was working the fields, the family shop, and a restaurant, then speed-running life strategies on Age of Empires. I learned physics to invent things, learned gratitude after losing a close friend, and learned that life is short—so I like to make it count.",
+    "In 2019 I came to America planning to engineer the sun with solar panels, switched to IT in 2022, and am now mastering AI in 2026—because why pick one future when you can upgrade to all of them? I'm passionate about becoming \\\"crazy rich,\\\" eating pho like it's a personality trait, and playing pickleball with such intensity the ball files an HR complaint. I'm building AI systems to connect millions of people around shared passions—starting right here in Texas with DinkPass, an AI-enabled sports facility platform.",
   ],
   focus: [
     "AI-Assisted SDLC",
